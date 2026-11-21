@@ -1,0 +1,24 @@
+{
+  "name": "chi-2027-site",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.ts --host 127.0.0.1",
+    "build": "tsc -b && vite build --config vite.config.ts && vite build --config vite.shared.config.ts --mode data && vite build --config vite.shared.config.ts --mode widget && node ../scripts/assemble.mjs",
+    "preview": "vite preview --config vite.config.ts --outDir ../..",
+    "check": "tsc -b"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
+}
