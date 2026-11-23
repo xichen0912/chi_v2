@@ -367,7 +367,7 @@ FLOORS.forEach(f=>f.fac.forEach(x=>{ x.y = CORR.y + CORR.h/2; }));
 const ROOMS = {}; FLOORS.forEach(f=>f.rooms.forEach(r=>ROOMS[r.name]=r));
 
 // ---------- helpers ----------
-const S = {tab:"map", view:"map", floor:"P1", sel:null, route:false, from:null, picking:false, find:null, q:"", ret:null, lift:null};
+const S = {tab:"map", view:"map", floor:"ALL", sel:null, route:false, from:null, picking:false, find:null, q:"", ret:null, lift:null};
 const screen = document.getElementById("main");
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const isNum = r => /^\d|^M\d/.test(r.short);
@@ -559,13 +559,15 @@ function renderRoute(p){
 // ---------- all-levels overview ----------
 const STACK = ["P2","M2","P1","M1","P0"];
 function overviewSVG(compact=false){
-  const W=compact?300:250, D=compact?44:40, SK=46, X0=compact?70:140, GAP=compact?60:66, TOP=18;
+  const W=compact?300:250, D=compact?44:40, SK=46, X0=compact?70:170, GAP=compact?60:66, TOP=18;
+  // Level descriptions wrap onto at most two lines so they never run into the slabs.
+  const wrapDesc=t=>{ const parts=t.split(" · "), lines=[""]; parts.forEach(p=>{ const cur=lines[lines.length-1]; if(cur && (cur+" · "+p).length>22 && lines.length<2) lines.push(p); else lines[lines.length-1]=cur?cur+" · "+p:p; }); return lines; };
   const tgt = S.sel && ROOMS[S.sel] ? ROOMS[S.sel] : null;
   const fromD = S.route && S.from ? doorOf(S.from) : null;
   const H = TOP + GAP*STACK.length + 40;
   const pt=(i,x,y)=>{ const u=(x-10)/340, v=Math.max(0,Math.min(1,(y-30)/230)), yy=TOP+i*GAP; return [X0+SK*(1-v)+W*u, yy+D*v]; };
   const poly=(i,r)=>[pt(i,r.x,r.y),pt(i,r.x+r.w,r.y),pt(i,r.x+r.w,r.y+r.h),pt(i,r.x,r.y+r.h)].map(q=>q.map(n=>n.toFixed(1)).join(",")).join(" ");
-  let s=`<svg class="ov" viewBox="0 0 520 ${H}" role="group" aria-label="All levels, top to bottom: ${STACK.join(", ")}, plus the Auditorium in a separate building">
+  let s=`<svg class="ov" viewBox="0 0 ${compact?520:550} ${H}" role="group" aria-label="All levels, top to bottom: ${STACK.join(", ")}, plus the Auditorium in a separate building">
     <defs><pattern id="ovbusy" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--busy-soft)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--busy)" stroke-width="1.2" opacity=".6"/></pattern></defs>`;
   // elevator shafts
   const lifts=[60,262];
@@ -585,7 +587,7 @@ function overviewSVG(compact=false){
     lifts.forEach(x=>{ const q=pt(i,x,150); s+=`<circle cx="${q[0]}" cy="${q[1]}" r="${S.find==="lift"?4.5:3.5}" class="ldot"/>`; });
     if (isF && S.from && !fromD.unknown){ const q = S.from===ENTRANCE ? pt(i,180,250) : pt(i,doorOf(S.from).x,doorOf(S.from).y); s+=`<circle cx="${q[0]}" cy="${q[1]}" r="5" class="you"/>`; }
     if (isT){ const c=pt(i,tgt.x+tgt.w/2,tgt.y); s+=`<path d="M${c[0]} ${c[1]} l-5 -8 a6 6 0 1 1 10 0 z" class="pinm"/>`; }
-    s+=compact ? `<text x="10" y="${yy+D/2+8}" class="lv" style="font-size:22px">${id}</text></g>` : `<text x="10" y="${yy+D/2}" class="lv">${id}</text><text x="10" y="${yy+D/2+13}" class="ld">${esc(f.desc)}</text></g>`;
+    s+=compact ? `<text x="10" y="${yy+D/2+8}" class="lv" style="font-size:22px">${id}</text></g>` : `<text x="10" y="${yy+D/2-4}" class="lv">${id}</text>${wrapDesc(f.desc).map((l,k)=>`<text x="10" y="${yy+D/2+9+k*11}" class="ld">${esc(l)}</text>`).join("")}</g>`;
   });
   // auditorium
   // route across levels
@@ -594,7 +596,7 @@ function overviewSVG(compact=false){
     if (i1>=0&&i2>=0){ const a=pt(i1,lx,150), b=pt(i2,lx,150); s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" class="trip"/>`; }
   }
   if (compact) return s+`</svg>`;
-  const ay=TOP+(STACK.length-1)*GAP+6, ax=420, aud=F.AUD, isT=tgt&&tgt.floor==="AUD";
+  const ay=TOP+(STACK.length-1)*GAP+6, ax=450, aud=F.AUD, isT=tgt&&tgt.floor==="AUD";
   s+=`<g class="slab aud${S.floor==="AUD"?" act":""}${isT?" tgt":""}" data-floor="AUD" tabindex="0" role="button" aria-label="Auditorium, separate building${isT?", your destination":""}">
      <polygon class="side" points="${ax},${ay+34} ${ax+70},${ay+34} ${ax+70},${ay+39} ${ax},${ay+39}"/>
      <polygon class="top" points="${ax+22},${ay} ${ax+92},${ay} ${ax+70},${ay+34} ${ax},${ay+34}"/>
@@ -757,7 +759,7 @@ try { const ref = new URL(document.referrer); const seg = ref.pathname.split("/"
   if (ref.origin===location.origin && SECTIONS[seg] && history.length>1) BACK = SECTIONS[seg]; } catch(e) {}
 function syncURL(){
   const p=new URLSearchParams();
-  if (S.sel) p.set("room", S.sel); else if (S.find) p.set("find", S.find); else if (S.floor && S.floor!=="P1") p.set("level", S.floor);
+  if (S.sel) p.set("room", S.sel); else if (S.find) p.set("find", S.find); else if (S.floor && S.floor!=="ALL") p.set("level", S.floor);
   if (S.view==="list") p.set("view","list");
   const q=p.toString(), url=location.pathname+(q?"?"+q:"");
   if (url!==location.pathname+location.search) history.replaceState(history.state, "", url);
