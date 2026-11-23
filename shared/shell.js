@@ -81,10 +81,7 @@
   side.innerHTML = brand +
     '<ul class="chi-nav">' + ITEMS.map(function (it) { return link(it); }).join('') + '</ul>' +
     '<div class="chi-sep"></div>' +
-    '<ul class="chi-nav">' + link(['my', 'My', 'my/'], true) + '</ul>' +
-    '<div class="chi-side-foot"><b>Prototype</b>' +
-    '<p>Sessions, papers and people are fictional. Venue layout, accessibility FAQ and award list are adapted from CHI 2026 for testing.</p>' +
-    '<p>Times are Pittsburgh time (UTC −04:00).</p></div>';
+    '<ul class="chi-nav">' + link(['my', 'My', 'my/'], true) + '</ul>';
 
   var skip = document.createElement('a');
   skip.className = 'chi-skip';

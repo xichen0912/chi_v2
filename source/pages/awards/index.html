@@ -15,6 +15,7 @@
 <style>
 body{margin:0;background:#F4F3EF}
 #dc-root h1{font-size:clamp(40px,11vw,72px)!important}
+@media (max-width:760px){.awards-banner-art{display:none}.awards-banner{padding:28px 24px!important;min-height:220px!important}}
 @media (max-width:600px){#dc-root section{padding-left:16px!important;padding-right:16px!important}#dc-root section:first-child{padding-top:32px!important}}
 a{color:#1C3A2E}a:hover{color:#0F1F19}
 button,input{font-family:inherit}
@@ -28,20 +29,15 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 <div style="flex: 999 1 640px; min-width: 0">
 
 
-<section class="page-hero" style="max-width: 1120px; margin: 0 auto; padding: 48px 24px 56px; display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
-<div style="flex: 1 1 100%; min-width: 0"><h1 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 72px; line-height: 0.92; letter-spacing: -0.045em; font-weight: 500">CHI 2027 Awards</h1><p class="page-lede">Award-winning papers by day or topic. Add the ones you want to My plan.</p></div>
-<div style="flex: 1 1 100%; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px">
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; align-items: center; gap: 20px">
-<div style="flex: none; width: 48px; height: 48px; background: #314F44; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
-<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4"></path><path d="M16 6h3a3 3 0 0 1-3 4"></path><path d="M12 13v4"></path><path d="M9 20h6"></path></svg>
-</div>
-<div><h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Best Paper · 62</h3><div style="font-size: 13px; color: #666761; margin-top: 4px">Top 1% of all paper submissions</div></div>
-</div>
-<div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; align-items: center; gap: 20px">
-<div style="flex: none; width: 48px; height: 48px; background: #DCE6E0; color: #1C3A2E; display: flex; align-items: center; justify-content: center">
-<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"></circle><path d="M9 13.5L7.5 21l4.5-2.5l4.5 2.5L15 13.5"></path></svg>
-</div>
-<div><h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">Honorable Mention · 213</h3><div style="font-size: 13px; color: #666761; margin-top: 4px">Top 5% of all paper submissions</div></div>
+<section class="page-hero" style="max-width: 1120px; margin: 0 auto; padding: 40px 24px 56px">
+<div class="awards-banner" style="position: relative; overflow: hidden; border-radius: 16px; background: #0F1F19; color: #FFFFFF; min-height: 280px; padding: 40px 44px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; gap: 32px">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(rgba(211,251,99,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(211,251,99,0.07) 1px, transparent 1px); background-size: 40px 40px"></div>
+<div aria-hidden="true" style="position: absolute; right: -120px; top: -160px; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(49,79,68,0.9) 0%, rgba(15,31,25,0) 70%)"></div>
+<svg class="awards-banner-art" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#D3FB63" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 48px; top: 50%; width: 240px; height: 240px; transform: translateY(-50%); opacity: 0.85"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4"></path><path d="M16 6h3a3 3 0 0 1-3 4"></path><path d="M12 13v4"></path><path d="M9 20h6"></path></svg>
+<h1 style="position: relative; margin: 0; max-width: 620px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 72px; line-height: 0.95; letter-spacing: -0.045em; font-weight: 600; color: #FFFFFF">CHI 2027 Awards</h1>
+<div style="position: relative; display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 14px; color: #C9D3CE">
+<span><b style="color: #D3FB63; font-weight: 700">62</b> Best Papers · top 1%</span>
+<span><b style="color: #D3FB63; font-weight: 700">213</b> Honorable Mentions · top 5%</span>
 </div>
 </div>
 </section>
@@ -52,7 +48,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 <sc-for list="{{multi}}" as="m" hint-placeholder-count="6">
 <div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; flex-direction: column; gap: 8px">
 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
-<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #1C3A2E">{{m.when}}</span>
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{m.when}}</span>
 <span style="flex: none; padding: 3px 8px; background: #314F44; color: #FFFFFF; font-size: 12px; font-weight: 500">{{m.count}} Best Papers</span>
 </div>
 <h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{m.session}}</h3>
@@ -64,7 +60,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 
 <section aria-labelledby="list-h" style="max-width: 1120px; margin: 0 auto; padding: 0 24px 72px">
 <h2 id="list-h" style="margin: 0 0 24px; font-family: Manrope, 'DM Sans', sans-serif; font-size: 32px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 500">Award Papers</h2>
-<p style="margin: -12px 0 24px; color: #666761; font-size: 14px">Example data: the CHI 2026 Best Papers, placed on the CHI 2027 week for this prototype. Papers you add appear in <a href="../my/">My</a> and on the <a href="../map/">Map</a>.</p>
 <div style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px">
 <div style="display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px">
 <div role="tablist" aria-label="Award type" style="display: flex; gap: 4px; padding: 4px; background: #ECEBE5">
@@ -85,13 +80,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 </div>
 <div role="group" aria-label="Filter by topic" style="display: flex; flex-wrap: wrap; gap: 8px">
 <sc-for list="{{topics}}" as="tp" hint-placeholder-count="11">
-<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid {{tp.border}}; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 15px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 600; opacity: 0.75">{{tp.count}}</span></button>
+<button type="button" aria-pressed="{{tp.pressed}}" onClick="{{tp.pick}}" style="flex: 1 1 auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid {{tp.border}}; background: {{tp.bg}}; color: {{tp.fg}}; font-size: 13px; font-weight: 500; cursor: pointer">{{tp.label}} <span style="font-size: 12px; font-weight: 500; color: {{tp.countColor}}">{{tp.count}}</span></button>
 </sc-for>
 </div>
 </div>
 
 <sc-if value="{{isHM}}" hint-placeholder-val="{{false}}">
-<div style="background: #FFFFFF; border: 1px dashed #C7C6BF; padding: 40px 24px; text-align: center; color: #3A3B36; font-size: 15px; line-height: 1.55">The same views apply to all 213 Honorable Mentions. This prototype shows the 62 Best Papers.</div>
+<div style="background: #FFFFFF; border: 1px dashed #C7C6BF; padding: 40px 24px; text-align: center; color: #3A3B36; font-size: 15px; line-height: 1.55">Honorable Mention papers will be listed here.</div>
 </sc-if>
 
 <sc-if value="{{showDays}}" hint-placeholder-val="{{true}}">
@@ -99,7 +94,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 <sc-for list="{{dayTabs}}" as="d" hint-placeholder-count="5">
 <button type="button" role="tab" aria-selected="{{d.selected}}" onClick="{{d.pick}}" style="flex: 1 1 150px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 18px; border: 1px solid {{d.border}}; background: {{d.bg}}; color: {{d.fg}}; cursor: pointer; text-align: left">
 <span style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{d.label}}</span>
-<span style="font-size: 13px; opacity: 0.8">{{d.count}}</span>
+<span style="font-size: 13px; color: {{d.countColor}}">{{d.count}}</span>
 </button>
 </sc-for>
 </div>
@@ -111,12 +106,12 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 <div>
 <div style="display: flex; align-items: baseline; gap: 12px; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid #C7C6BF">
 <h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500; color: #1C3A2E">{{s.label}}</h3>
-<span style="font-size: 13px; color: #666761">{{s.count}}</span>
+<span style="font-size: 13px; color: #8A8B84">{{s.count}}</span>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px">
 <sc-for list="{{s.items}}" as="p" hint-placeholder-count="3">
 <article id="{{p.anchor}}" style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 24px; display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 80px">
-<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #666761">{{p.topicLabel}}</span>
+<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{p.topicLabel}}</span>
 <h4 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h4>
 <sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
 <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">{{p.sum}}</p>
@@ -141,10 +136,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #314F
 <article style="background: #FFFFFF; border: 1px solid #D8D7D1; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start">
 <div style="flex: 0 0 120px; display: flex; flex-direction: column; gap: 2px">
 <span style="font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500; color: #1C3A2E">{{p.dayLabel}}</span>
-<span style="font-size: 13px; color: #666761">{{p.timeLabel}}</span>
+<span style="font-size: 13px; color: #8A8B84">{{p.timeLabel}}</span>
 </div>
 <div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #666761">{{p.topicLabel}}</span>
+<span style="font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8B84">{{p.topicLabel}}</span>
 <h3 style="margin: 0; font-family: Manrope, 'DM Sans', sans-serif; font-size: 20px; line-height: 1.25; letter-spacing: -0.02em; font-weight: 500">{{p.title}}</h3>
 <sc-if value="{{p.hasSum}}" hint-placeholder-val="{{false}}">
 <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #3A3B36">{{p.sum}}</p>
@@ -212,7 +207,7 @@ class Component extends DCLogic {
     var topics = TOPICS.map(function (t) {
       var on = t[0] === 'all' ? !anyTopic : !!tsel[t[0]];
       var n = t[0] === 'all' ? byQuery.length : byQuery.filter(function (p) { return p.topic === t[0]; }).length;
-      return { label: t[1], count: n, pressed: on ? 'true' : 'false', bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3A3B36', border: on ? '#314F44' : '#D8D7D1', pick: function () { if (t[0] === 'all') { self.setState({ topics: {} }); return; } var n = Object.assign({}, self.state.topics); n[t[0]] = !n[t[0]]; self.setState({ topics: n }); } };
+      return { label: t[1], count: n, pressed: on ? 'true' : 'false', bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#3A3B36', border: on ? '#314F44' : '#D8D7D1', countColor: on ? 'rgba(255,255,255,0.6)' : '#8A8B84', pick: function () { if (t[0] === 'all') { self.setState({ topics: {} }); return; } var n = Object.assign({}, self.state.topics); n[t[0]] = !n[t[0]]; self.setState({ topics: n }); } };
     });
     function seg(id, cur, label, key) {
       var on = id === cur;
@@ -225,7 +220,7 @@ class Component extends DCLogic {
       var n = shown.filter(function (p) { return p.day === d[0]; }).length;
       var on = st.day === d[0];
       return { id: d[0], label: d[1], n: n, count: n + (n === 1 ? ' paper' : ' papers'), selected: on ? 'true' : 'false',
-        bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#171816', border: on ? '#314F44' : '#D8D7D1',
+        bg: on ? '#314F44' : '#FFFFFF', fg: on ? '#FFFFFF' : '#171816', border: on ? '#314F44' : '#D8D7D1', countColor: on ? 'rgba(255,255,255,0.6)' : '#8A8B84',
         pick: function () { self.setState({ day: d[0] }); } };
     }).filter(function (d) { return d.id !== 'TBA' || d.n > 0 || st.day === 'TBA'; });
 
