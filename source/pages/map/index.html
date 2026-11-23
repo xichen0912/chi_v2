@@ -24,7 +24,7 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
 .app{display:block;height:100vh;min-height:640px}
 /* main */
-.main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;height:100%}
 .topbar{display:flex;align-items:center;gap:14px;padding:14px 22px;background:var(--surface);border-bottom:1px solid var(--line)}
 .search{flex:1;max-width:520px;display:flex;align-items:center;gap:10px;background:var(--surface-2);border:1px solid transparent;border-radius:10px;padding:9px 12px}
 .search:focus-within{border-color:var(--accent);background:var(--surface)}
@@ -36,7 +36,7 @@ button{font:inherit;color:inherit}
 .now-chip{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap}
 .screen{flex:1;min-height:0;overflow:hidden}
 /* plan */
-svg.plan{width:100%;height:auto;max-height:100%;display:block}
+svg.plan{width:100%;height:100%;max-width:100%;max-height:100%;display:block}
 .plan .bg{fill:var(--surface)}
 .plan .corr{fill:var(--corridor)}
 .plan .room{fill:var(--room);stroke:var(--line-2);stroke-width:1;cursor:pointer;transition:fill .15s}
@@ -98,7 +98,7 @@ svg.plan{width:100%;height:auto;max-height:100%;display:block}
 .center{display:flex;flex-direction:column;min-width:0;min-height:0;padding:18px 22px;gap:12px}
 .center h1{margin:0;font-size:22px;letter-spacing:-.01em}
 .center h1 span{font-weight:500;color:var(--muted);font-size:15px;margin-left:8px}
-.canvas{flex:1;min-height:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:60px 80px 66px 20px;display:flex;align-items:center;justify-content:center}
+.canvas{flex:1;min-height:320px;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:60px 80px 66px 20px;display:flex;align-items:center;justify-content:center}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);padding:5px 12px 5px 8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-2)}
 .pill i{width:14px;height:14px;border-radius:50%;display:inline-block}
@@ -296,7 +296,7 @@ svg.ov{width:100%;height:auto;max-height:100%;display:block}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-width:1180px){.mapview.open{grid-template-columns:minmax(0,1fr) 300px}.schedview.open{grid-template-columns:minmax(0,1fr) 400px}.schedview.open .card{grid-template-columns:1fr}}
 @media (max-width:900px){.app{height:auto;min-height:0}.main{height:auto}
-  .mapview.open,.mapview{grid-template-columns:1fr}.panel{max-height:none}.canvas{min-height:0;flex-direction:column;align-items:stretch;padding:56px 70px 12px 12px}.layerbar{position:static;align-self:flex-start;flex-wrap:wrap;max-width:none;row-gap:4px;margin:10px 0 0;box-shadow:none}.nextchip{max-width:calc(100% - 28px)}
+  .mapview.open,.mapview{grid-template-columns:1fr}.panel{max-height:none}.canvas{min-height:0;flex-direction:column;align-items:stretch;padding:56px 70px 12px 12px}.layerbar{position:static;align-self:flex-start;flex-wrap:wrap;max-width:none;row-gap:4px;margin:10px 0 0;box-shadow:none}.nextchip{max-width:calc(100% - 28px)}svg.plan{height:auto}
   .mapview,.schedview{grid-template-columns:1fr;height:auto}.floors{flex-direction:row;flex-wrap:wrap}.panel,.preview{border-left:0;border-top:1px solid var(--line)}.screen{overflow:visible}.slist{overflow:visible}.topbar{flex-wrap:wrap}.now-chip{margin-left:0}}
 </style>
 </head>
@@ -622,7 +622,7 @@ function renderMap(){
   const layers = Object.entries(FIND).map(([k,v])=>`<button class="lyr" data-find="${k}" aria-pressed="${S.find===k}" title="${esc(v.title)}">${LAYER_ICON[k]}<span>${esc(v.short)}</span></button>`).join("");
   const open = !!(S.sel || S.find || S.route);
   screen.innerHTML = `<div class="mapview${open?" open":""}">
-    <section class="center">${S.ret?`<button class="retback" id="retBack">← Back to results</button>`:(BACK&&S.sel===ARRIVED?`<button class="retback" id="pageBack">← Back to ${esc(BACK)}</button>`:"")}<h1>${ALL?"All levels<span>Top to bottom · tap a level to open it</span>":esc(f.label==="Auditorium"?"Auditorium":"Level "+f.label)+"<span>"+esc(f.desc)+"</span>"}</h1>
+    <section class="center">${S.ret?`<button class="retback" id="retBack">← Back to results</button>`:(BACK&&ARRIVED&&S.sel===ARRIVED?`<button class="retback" id="pageBack">← Back to ${esc(BACK)}</button>`:"")}<h1>${ALL?"All levels<span>Top to bottom · tap a level to open it</span>":esc(f.label==="Auditorium"?"Auditorium":"Level "+f.label)+"<span>"+esc(f.desc)+"</span>"}</h1>
       <div class="canvas${S.picking?" picking":""}">${ALL?overviewSVG():planSVG(f, S.sel, S.route)}
         ${!open&&NEXT?`<button class="nextchip" data-open="${esc(NEXT.room)}">${ICON.pin}<span><em>${NEXT.mine?"My next":"Next"}</em> ${esc(nextLabel(NEXT))}</span><b aria-hidden="true">→</b></button>`:""}
         <nav class="floorbar" aria-label="Floors">${floors}</nav>
