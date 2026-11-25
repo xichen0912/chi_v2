@@ -11,7 +11,12 @@ type ContentSeed = {
   authors: string[]
   finding: string
   keywords: string[]
+  /** Real PDF link; papers without one open the placeholder PDF. */
+  pdf?: string
 }
+
+// Papers are fictional, so every one opens the same placeholder until a real link is filled in above.
+const PLACEHOLDER_PDF = '../shared/papers/placeholder.pdf'
 
 function timeInMinutes(time: string) {
   const [clock, meridiem] = time.split(' ')
@@ -36,6 +41,7 @@ function makeContents(prefix: string, startTime: string, endTime: string, seeds:
     startTime: formatTime(sessionStart + Math.round((duration * index) / seeds.length)),
     endTime: formatTime(sessionStart + Math.round((duration * (index + 1)) / seeds.length)),
     keywords: seed.keywords,
+    pdf: seed.pdf ?? PLACEHOLDER_PDF,
     abstract: `${seed.finding} We report findings from a mixed-method study and translate them into practical design considerations. The results show how context, expectations, and interface choices shape people’s experiences, while identifying open questions for future HCI research.`,
   }))
 }

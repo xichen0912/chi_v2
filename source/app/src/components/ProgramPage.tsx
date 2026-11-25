@@ -78,12 +78,15 @@ export function ProgramPage(props: Props) {
         </section>
       ) : (
         <>
+          <div className="now-wrap shell">
+            <NowStrip onGo={props.onGo} />
+          </div>
+
           <div className="date-nav-wrap shell">
             <DateNavigation days={conferenceDays} selectedDate={props.selectedDate} onSelect={props.onSelectDate} markedDates={markedDates} />
           </div>
 
           <section className="program-content shell">
-            {isToday && <NowStrip onGo={props.onGo} />}
             <div className="gallery-heading">
               <h2>{currentDay.longDate}{isToday && <span className="today-tag">Today</span>}</h2>
               <div className="experiment-tools">

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { conferenceDays, sessions } from '../data/sessions'
 import { getSavedLinks, getSessionsByTopic } from '../lib/relevance'
 import type { Route } from '../lib/route'
@@ -6,6 +7,7 @@ import { RoomMap } from './RoomMap'
 import { togglePlan, usePlan, useSavedPapers } from '../lib/store'
 import { overlapsPlan } from '../lib/access'
 import { roomLabel } from '../data/venue'
+import { sessionImage } from '../data/images'
 import { RoomNotes } from './RoomNotes'
 import { ContentItem } from './ContentItem'
 
@@ -19,6 +21,7 @@ export function SessionDetail({ session, onBack, onGo, topic, onTopic }: { sessi
   const plan = usePlan()
   const planned = plan.includes(session.id)
   const clash = !planned && overlapsPlan(session, sessions, plan)
+  const cover = sessionImage(session.id, 2400)
 
   return (
     <main className="detail-page">
@@ -26,10 +29,12 @@ export function SessionDetail({ session, onBack, onGo, topic, onTopic }: { sessi
         <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span> Program</button>
       </div>
 
-      <header className="detail-hero shell">
-        <p className="eyebrow">{session.category}</p>
-        <h1>{session.title}</h1>
-        <p className="detail-description">{session.description}</p>
+      <header className={`detail-hero ${cover ? 'has-cover' : ''}`} style={cover ? ({ '--cover': `url("${cover}")` } as CSSProperties) : undefined}>
+        <div className="shell">
+          <p className="eyebrow">{session.category}</p>
+          <h1>{session.title}</h1>
+          <p className="detail-description">{session.description}</p>
+        </div>
       </header>
 
       <div className="detail-layout shell">
@@ -43,9 +48,6 @@ export function SessionDetail({ session, onBack, onGo, topic, onTopic }: { sessi
             {planned ? '✓ In My plan' : '+ Add to My plan'}
           </button>
           {clash && <p className="plan-clash">Overlaps a session already in your plan.</p>}
-          <div className="detail-keywords">
-            {session.keywords.map((keyword) => <span key={keyword}>{keyword}</span>)}
-          </div>
           {elsewhere.length > 0 && (
             <ul className="link-list elsewhere">
               {elsewhere.map((other) => (

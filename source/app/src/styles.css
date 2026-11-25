@@ -260,7 +260,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .program-intro { padding: 48px 0 42px; }
   .program-intro h1 { margin: 12px 0 20px; font-size: clamp(44px, 14vw, 62px); }
   .intro-copy { margin-left: 0; font-size: 16px; }
-  .date-nav-wrap { width: 100%; }
+  .date-nav-wrap { width: calc(100% - 32px); }
   .date-nav { overflow: hidden; }
   .date-scroll { width: 100%; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
   .date-scroll::-webkit-scrollbar { display: none; }
@@ -563,3 +563,166 @@ button.saved-link:hover .saved-title { text-decoration: underline; }
 .card-status { display: inline-block; margin: 0 0 10px; position: relative; z-index: 1; }
 .status-badge { white-space: nowrap; }
 .timeline-slot.is-past .slot-cards, .timeline-slot.is-past .slot-time { opacity: .5; }
+
+/* ===== Photo covers: the picture carries the card; no secondary copy ===== */
+/* Now strip sits above the date tabs on both layouts */
+.now-wrap .now-strip { margin: 0 0 16px; }
+
+/* Classic card: a slim head, then title / time / room on the session photo */
+.session-card { padding: 0; }
+.session-card .card-head { align-items: center; margin: 0; padding: 14px 18px; }
+.card-cover {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 240px; padding: 22px 22px 20px; color: #fff;
+  background: linear-gradient(180deg, rgba(15,31,25,.08) 0%, rgba(15,31,25,.42) 42%, rgba(15,31,25,.9) 100%), var(--cover, none) center / cover no-repeat, var(--deep);
+}
+.card-cover .card-status { align-self: flex-start; margin: 0 0 10px; }
+.session-card .card-cover h3 { margin: 0 0 14px; color: #fff; }
+.card-cover .card-meta { gap: 22px; margin: 0; padding: 0; border: 0; }
+.card-cover .card-meta dd { color: rgba(255,255,255,.88); }
+.card-cover .room-link { border-bottom-color: rgba(255,255,255,.5); }
+.card-cover .room-link:hover { color: var(--lime); }
+.card-cover .room-map rect, .slot-card.has-cover .room-map rect { fill: rgba(255,255,255,.28); }
+.card-cover .room-map rect.corridor, .slot-card.has-cover .room-map rect.corridor { fill: rgba(255,255,255,.1); }
+.card-cover .room-map rect.is-here, .slot-card.has-cover .room-map rect.is-here { fill: var(--lime); }
+.session-card.is-planned .card-cover { box-shadow: inset 4px 0 0 var(--lime); }
+.session-card.is-conflict .card-cover { box-shadow: inset 4px 0 0 #ee4d22; }
+
+/* Day card: the photo fills the card, darkest behind the text */
+.start-page .slot-card.has-cover {
+  display: flex; flex-direction: column; justify-content: flex-end; min-height: 150px; color: #fff;
+  background: linear-gradient(90deg, rgba(15,31,25,.9) 0%, rgba(15,31,25,.66) 50%, rgba(15,31,25,.2) 100%), var(--cover) center / cover no-repeat, var(--deep);
+}
+.start-page .slot-card.has-cover .status-badge { align-self: flex-start; }
+.start-page .slot-card.has-cover .slot-open:hover { color: var(--lime); }
+.start-page .slot-card.has-cover .room-link { border-bottom-color: rgba(255,255,255,.5); }
+.start-page .slot-card.has-cover .room-link:hover { color: var(--lime); }
+.start-page .slot-card.has-cover .room-notes li { border-color: rgba(255,255,255,.3); color: #fff; }
+.start-page .slot-card.has-cover .room-notes .note-crowded, .start-page .slot-card.has-cover .room-notes .note-loud { color: #ffb08f; border-color: rgba(255,176,143,.5); }
+.start-page .slot-card.has-cover.is-planned { box-shadow: inset 0 0 0 2px var(--lime), 0 8px 24px -12px rgba(15,31,25,.35); }
+.start-page .slot-card.has-cover.is-conflict { box-shadow: inset 0 0 0 2px var(--vermilion), 0 8px 24px -12px rgba(238,77,34,.35); }
+.start-page .slot-card.has-cover .slot-state { color: var(--lime); }
+.start-page .slot-card.has-cover .slot-state.is-conflict { color: #ff8a66; }
+
+/* Session page: full-bleed photo behind the headline, like the Awards hero */
+.detail-hero.has-cover {
+  display: flex; align-items: flex-end; min-height: clamp(320px, 36vw, 480px); padding: 0 0 44px; border-bottom: 0; color: #fff;
+  background: linear-gradient(180deg, rgba(15,31,25,.15) 0%, rgba(15,31,25,.35) 45%, rgba(15,31,25,.85) 100%), var(--cover) center 55% / cover no-repeat, var(--deep);
+}
+.detail-hero.has-cover .eyebrow { color: rgba(255,255,255,.78); }
+.detail-hero.has-cover h1 { margin-bottom: 0; color: #fff; }
+
+/* Session page alignment: description and papers share one text column; the side column starts on the same line */
+.contents-list > .detail-description { max-width: 720px; margin: 0 0 34px; padding-left: 74px; }
+.content-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+.content-actions .save-toggle, .content-actions .text-button { margin: 0; }
+.content-actions .text-button { margin-left: 6px; }
+.pdf-link { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 3px; color: var(--ink); background: var(--card); font-size: 13px; font-weight: 600; text-decoration: none; }
+.pdf-link:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 640px) {
+  .contents-list > .detail-description { padding-left: 43px; }
+  .card-cover { min-height: 210px; }
+}
+
+/* Now strip: only what is live, on its photo */
+.now-wrap .now-strip { gap: 10px; margin: 0 0 18px; padding: 0; border-radius: 0; background: none; }
+.now-strip .now-live {
+  position: relative; display: grid; align-content: end; gap: 4px; flex: 1 1 320px; min-height: 120px; padding: 18px 22px; border: 0; border-radius: 16px; color: #fff;
+  background: linear-gradient(90deg, rgba(15,31,25,.92) 0%, rgba(15,31,25,.7) 45%, rgba(15,31,25,.25) 100%), var(--cover, none) center / cover no-repeat, var(--deep);
+  box-shadow: 0 8px 24px -14px rgba(15,31,25,.45); transition: transform .3s cubic-bezier(.2,.7,.2,1);
+}
+.now-strip .now-live:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1.5px var(--lime), 0 12px 28px -14px rgba(15,31,25,.5); }
+.now-live em { display: inline-flex; align-items: center; gap: 8px; }
+.now-live em i { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px rgba(211,251,99,.2); animation: beat 1.6s ease-in-out infinite; }
+.now-live strong { font: 600 clamp(19px, 2vw, 24px)/1.15 var(--serif); letter-spacing: -.03em; }
+.now-live small { color: rgba(255,255,255,.75); font-size: 13px; }
+
+/* Dates: one slim slider instead of tall tabs */
+.date-nav-wrap { border: 0; }
+.date-slider { position: relative; display: grid; grid-template-columns: repeat(var(--count), 1fr); width: min(460px, 100%); padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--soft); }
+.date-thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / var(--count)); border-radius: 999px; background: var(--ink); transform: translateX(calc(var(--index) * 100%)); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.date-slider .date-tab, .date-slider .date-tab:first-child {
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 6px; flex: none; min-height: 36px; padding: 0 12px;
+  border: 0; border-radius: 999px; background: none; color: var(--muted); transition: color .25s ease;
+}
+.date-slider .date-tab:hover { background: none; color: var(--ink); }
+.date-slider .date-tab.is-active, .date-slider .date-tab.is-active:hover { background: none; color: #fff; }
+.date-slider .date-tab span, .date-slider .date-tab strong { display: inline; margin: 0; color: inherit; font: 600 13px/1 var(--sans); }
+.date-slider .date-tab span { opacity: .7; }
+.date-slider .today-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.date-slider .date-tab.is-active .today-dot { background: var(--lime); }
+.date-slider .date-dot { top: 6px; right: 12px; width: 6px; height: 6px; }
+@media (max-width: 640px) { .date-slider { width: 100%; } .date-slider .date-tab { padding: 0 6px; } }
+
+/* Day hero: the rest of today's plan, beside the map — time + title, one line each */
+.next-side { display: grid; gap: 18px; align-self: end; width: calc(clamp(150px, 20vw, 240px) + 38px); min-width: 0; animation: rise .9s .32s cubic-bezier(.2,.7,.2,1) backwards; }
+.next-side .next-map { width: 100%; }
+.next-following { position: relative; display: grid; gap: 2px; margin: 0; padding: 0 0 0 14px; list-style: none; }
+.next-following::before { content: ''; position: absolute; top: 9px; bottom: 9px; left: 0; width: 1px; background: rgba(243,241,232,.22); }
+.next-following button { position: relative; display: grid; grid-template-columns: 62px minmax(0, 1fr); align-items: baseline; gap: 8px; width: 100%; padding: 6px 0; border: 0; background: none; color: var(--cream); text-align: left; font: inherit; cursor: pointer; }
+.next-following button::before { content: ''; position: absolute; top: 12px; left: -17px; width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(243,241,232,.5); background: var(--deep); }
+.next-following time { color: var(--lime); font: 700 12px/1.3 var(--sans); font-variant-numeric: tabular-nums; opacity: .85; }
+.next-following span { overflow: hidden; font: 600 13px/1.3 var(--sans); white-space: nowrap; text-overflow: ellipsis; opacity: .82; }
+.next-following button:hover span { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 820px) { .next-side { width: 100%; } }
+
+/* Day page: Now, dates and the plan hero fit in one screen */
+.start-page .page-intro h1 { margin: 28px 0 18px; }
+.now-strip .now-live { min-height: 96px; padding: 14px 20px; }
+.date-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.date-row .date-nav { flex: 1 1 280px; min-width: 0; }
+.start-page .start-body { padding-top: 20px; }
+.start-page .next-up { align-items: center; gap: 32px; margin: 0 0 40px; padding: 24px 28px; border-radius: 20px; }
+.start-page .next-main { grid-template-columns: auto minmax(0, 1fr); align-items: end; column-gap: 28px; row-gap: 8px; }
+.start-page .next-main .next-kicker { grid-column: 1 / -1; margin: 0; }
+.start-page .next-main .next-clock { grid-row: 2 / span 2; font-size: clamp(56px, 7vw, 96px); }
+.start-page .next-up h1 { grid-column: 2; max-width: 20ch; font-size: clamp(22px, 2.4vw, 32px); }
+.start-page .next-up .room-notes { grid-column: 2; margin: 0; }
+.start-page .next-up .room-notes:empty { display: none; }
+.start-page .next-side { gap: 10px; width: 250px; }
+.start-page .next-map { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; }
+.start-page .next-map .room-map { width: 92px; }
+.start-page .next-up .next-following { gap: 0; }
+.start-page .next-following button { padding: 4px 0; }
+.start-page .next-following button::before { top: 10px; }
+@media (max-width: 820px) {
+  .start-page .next-up { padding: 20px; }
+  .start-page .next-main { grid-template-columns: 1fr; }
+  .start-page .next-main .next-clock { grid-row: auto; }
+  .start-page .next-up h1, .start-page .next-up .room-notes { grid-column: 1; }
+  .start-page .next-side { width: 100%; }
+}
+
+/* Day page: plan card on top (no Now bar), "no plans" version, ended sessions folded */
+.start-plan .next-up { margin: 0 0 18px; }
+.start-page .next-up.is-empty { display: grid; grid-template-columns: 1fr; gap: 8px; padding: 22px 28px; }
+.start-page .next-up.is-empty h1 { grid-column: 1; max-width: none; color: var(--cream); font-size: clamp(24px, 2.6vw, 34px); }
+.start-page .timeline-fold { display: grid; grid-template-columns: var(--time-w) var(--node-w) minmax(0, 1fr); gap: var(--gap); align-items: center; padding: 10px 0; }
+.start-page .timeline-fold .slot-node { margin-top: 0; }
+.timeline-fold button { justify-self: start; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px dashed var(--line); border-radius: 999px; background: none; color: var(--muted); font: 600 13px/1 var(--sans); cursor: pointer; }
+.timeline-fold button:hover { border-color: var(--ink); color: var(--ink); }
+
+/* Plan card on the session photo: darkest on the left behind the clock and title */
+.start-page .next-up.has-cover {
+  animation: none;
+  background: linear-gradient(90deg, rgba(15,31,25,.94) 0%, rgba(15,31,25,.66) 50%, rgba(15,31,25,.88) 100%), var(--cover) center / cover no-repeat, var(--deep);
+}
+.start-page .next-up.has-cover .next-map { border-color: rgba(243,241,232,.28); background: rgba(15,31,25,.7); }
+
+/* Papers: number and time share the left column; abstract only after "Abstract" is clicked */
+.content-item { grid-template-columns: 76px minmax(0, 1fr); }
+.content-number { gap: 8px; }
+.content-number .content-time { display: grid; gap: 2px; margin: 0; color: var(--accent); font: 700 12px/1.2 var(--sans); letter-spacing: 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.content-number .content-time small { color: var(--muted); font-size: 11px; font-weight: 500; }
+.content-number .saved-mark { margin-top: 2px; }
+.contents-list > .detail-description { padding-left: 100px; }
+.abstract[hidden] { display: none; }
+.abstract.is-expanded { margin-top: 14px; }
+@media (max-width: 640px) {
+  .content-item { grid-template-columns: 60px minmax(0, 1fr); gap: 12px; }
+  .contents-list > .detail-description { padding-left: 72px; }
+}
+
+/* Session description sits under the headline, on the photo */
+.detail-hero .detail-description { max-width: 680px; margin: 16px 0 0; }
+.detail-hero.has-cover .detail-description { color: rgba(255,255,255,.86); font-size: 18px; line-height: 1.5; }
+@media (max-width: 640px) { .detail-hero.has-cover .detail-description { font-size: 15px; } }

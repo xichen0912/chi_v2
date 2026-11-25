@@ -11,4 +11,4 @@ export const defaultSavedContentIds: string[] = [
 ]
 
 // Sessions the visitor has planned to attend on a first visit.
-export const defaultPlannedSessionIds: string[] = ['access-beyond-compliance', 'learning-together']
+export const defaultPlannedSessionIds: string[] = ['access-beyond-compliance', 'learning-together', 'healthcare-handoffs', 'platform-labor']

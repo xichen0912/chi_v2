@@ -1,12 +1,13 @@
+import type { CSSProperties } from 'react'
 import type { Interest } from '../data/interests'
 import { sessions } from '../data/sessions'
+import { sessionImage } from '../data/images'
 import { overlapsPlan } from '../lib/access'
 import { togglePlan, usePlan } from '../lib/store'
 import { roomLabel } from '../data/venue'
 import { sessionStatus, statusLabel } from '../data/now'
 import type { Route } from '../lib/route'
 import type { Session } from '../types'
-import { AccessPreview } from './AccessPreview'
 import { RoomMap } from './RoomMap'
 
 interface Props {
@@ -18,11 +19,13 @@ interface Props {
   onGo: (route: Route) => void
 }
 
-export function SessionCard({ session, interests, topicState, activeTopic, onTopic, onGo }: Props) {
+// The card is the photo: title, time and room sit on it. Everything else lives on the session page.
+export function SessionCard({ session, topicState, onGo }: Props) {
   const plan = usePlan()
   const planned = plan.includes(session.id)
   const conflict = overlapsPlan(session, sessions, plan)
   const status = sessionStatus(session)
+  const image = sessionImage(session.id)
 
   return (
     <article className={`session-card topic-${topicState} ${conflict ? 'is-conflict' : planned ? 'is-planned' : ''} status-${status}`}>
@@ -32,39 +35,22 @@ export function SessionCard({ session, interests, topicState, activeTopic, onTop
           {planned ? '✓ In My plan' : '+ Add to My plan'}
         </button>
       </div>
-      {(status === 'live' || status === 'next' || status === 'ended') && <span className={`status-badge card-status ${status}`}>{statusLabel[status]}</span>}
-      <h3>
-        <button type="button" className="card-open" onClick={() => onGo({ view: 'session', id: session.id })}>{session.title}</button>
-      </h3>
-      <dl className="card-meta">
-        <div><dt>Time</dt><dd>{session.startTime}–{session.endTime}</dd></div>
-        <div>
-          <dt>Room</dt>
-          <dd>
-            <button type="button" className="room-link" onClick={() => onGo({ view: 'map', room: session.room })}>
-              <RoomMap room={session.room} />{roomLabel(session.room)}
-            </button>
-          </dd>
-        </div>
-      </dl>
-      <p className="card-description">{session.description}</p>
-
-      <div className="card-extras">
-        <div className="keyword-list" aria-label="Session keywords">
-          {session.keywords.slice(0, 4).map((keyword) => (
-            <button
-              type="button"
-              key={keyword}
-              className={activeTopic === keyword.toLowerCase() ? 'is-active' : ''}
-              aria-pressed={activeTopic === keyword.toLowerCase()}
-              onClick={() => onTopic(keyword)}
-            >
-              {keyword}
-            </button>
-          ))}
-        </div>
-
-        <AccessPreview session={session} interests={interests} onGo={onGo} />
+      <div className="card-cover" style={image ? ({ '--cover': `url("${image}")` } as CSSProperties) : undefined}>
+        {(status === 'live' || status === 'next' || status === 'ended') && <span className={`status-badge card-status ${status}`}>{statusLabel[status]}</span>}
+        <h3>
+          <button type="button" className="card-open" onClick={() => onGo({ view: 'session', id: session.id })}>{session.title}</button>
+        </h3>
+        <dl className="card-meta">
+          <div><dt className="sr-only">Time</dt><dd>{session.startTime}–{session.endTime}</dd></div>
+          <div>
+            <dt className="sr-only">Room</dt>
+            <dd>
+              <button type="button" className="room-link" onClick={() => onGo({ view: 'map', room: session.room })}>
+                <RoomMap room={session.room} />{roomLabel(session.room)}
+              </button>
+            </dd>
+          </div>
+        </dl>
       </div>
     </article>
   )

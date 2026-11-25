@@ -8,6 +8,8 @@ export interface ConferenceContent {
   endTime: string
   abstract: string
   keywords: string[]
+  /** Link to the paper's PDF. */
+  pdf: string
 }
 
 export interface Session {

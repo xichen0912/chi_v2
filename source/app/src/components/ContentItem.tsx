@@ -17,7 +17,7 @@ interface Props {
   savedLink?: ContentLink
 }
 
-export function ContentItem({ content, index, sessionId, activeKeyword, onKeyword, onGo, savedLink }: Props) {
+export function ContentItem({ content, index, sessionId, activeKeyword, onGo, savedLink }: Props) {
   const savedContentIds = useSavedPapers()
   const isSaved = savedContentIds.includes(content.id)
   const [expanded, setExpanded] = useState(false)
@@ -29,20 +29,14 @@ export function ContentItem({ content, index, sessionId, activeKeyword, onKeywor
 
   const works = author ? getOtherAppearances(sessions, author, sessionId) : []
 
-  const handleKeyword = (keyword: string) => {
-    onKeyword(keyword)
-    // Items above collapse/expand; keep the clicked paper where the reader is looking.
-    window.requestAnimationFrame(() => ref.current?.scrollIntoView({ block: 'nearest' }))
-  }
-
   return (
     <article ref={ref} className={`content-item ${state}`}>
       <span className="content-number">
         <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <time className="content-time">{content.startTime}<small>{content.endTime}</small></time>
         {isSaved && <span className="saved-mark" title="Saved" role="img" aria-label="Saved"><NoteIcon kind="saved" size={16} /></span>}
       </span>
       <div className="content-body">
-        <p className="content-time">{content.startTime}–{content.endTime}</p>
         <h3>{content.title}</h3>
         <div className="collapsible">
           <p className="authors">
@@ -77,28 +71,20 @@ export function ContentItem({ content, index, sessionId, activeKeyword, onKeywor
               <span>{savedLink.shared.join(', ')}</span>
             </button>
           )}
-          <div className="keyword-list content-keywords">
-            {content.keywords.map((keyword) => (
-              <button
-                type="button"
-                key={keyword}
-                className={activeKeyword === keyword.toLowerCase() ? 'is-active' : ''}
-                aria-pressed={activeKeyword === keyword.toLowerCase()}
-                onClick={() => handleKeyword(keyword)}
-              >
-                {keyword}
-              </button>
-            ))}
+          <div className="content-actions">
+            <button type="button" className={`save-toggle ${isSaved ? 'is-saved' : ''}`} aria-pressed={isSaved} onClick={() => toggleSavedPaper(content.id)}>
+              <NoteIcon kind="saved" size={14} /> {isSaved ? 'Saved' : 'Save paper'}
+            </button>
+            <a className="pdf-link" href={content.pdf} target="_blank" rel="noopener noreferrer" aria-label={`PDF: ${content.title} (opens in a new tab)`}>
+              PDF <span aria-hidden="true">↗</span>
+            </a>
+            <button type="button" className="text-button" aria-expanded={expanded} aria-controls={abstractId} onClick={() => setExpanded((value) => !value)}>
+              Abstract <span aria-hidden="true">{expanded ? '↑' : '↓'}</span>
+            </button>
           </div>
-          <div id={abstractId} className={`abstract ${expanded ? 'is-expanded' : ''}`}>
+          <div id={abstractId} className="abstract is-expanded" hidden={!expanded}>
             <p>{content.abstract}</p>
           </div>
-          <button type="button" className={`save-toggle ${isSaved ? 'is-saved' : ''}`} aria-pressed={isSaved} onClick={() => toggleSavedPaper(content.id)}>
-            <NoteIcon kind="saved" size={14} /> {isSaved ? 'Saved' : 'Save paper'}
-          </button>
-          <button type="button" className="text-button" aria-expanded={expanded} aria-controls={abstractId} onClick={() => setExpanded((value) => !value)}>
-            Abstract <span aria-hidden="true">{expanded ? '↑' : '↓'}</span>
-          </button>
         </div>
       </div>
     </article>

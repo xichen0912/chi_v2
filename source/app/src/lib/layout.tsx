@@ -2,16 +2,17 @@ import { createContext, useContext } from 'react'
 
 export type Layout = 'classic' | 'day'
 
-export const LayoutContext = createContext<Layout>('classic')
+export const LayoutContext = createContext<Layout>('day')
 export const useLayout = () => useContext(LayoutContext)
 
 const KEY = 'chi-layout'
 
 export function loadLayout(): Layout {
   try {
-    return window.localStorage.getItem(KEY) === 'day' ? 'day' : 'classic'
+    // Day is the default; Classic only when the visitor picked it.
+    return window.localStorage.getItem(KEY) === 'classic' ? 'classic' : 'day'
   } catch {
-    return 'classic'
+    return 'day'
   }
 }
 
