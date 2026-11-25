@@ -40,6 +40,7 @@ h1, h2, h3 { font-family: var(--serif); }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--canvas); }
 button, input, select, textarea { font: inherit; }
@@ -56,7 +57,7 @@ button { color: inherit; }
 .text-button { border: 0; background: transparent; color: var(--purple-strong); font-weight: 700; text-decoration: none; cursor: pointer; }
 .text-button span { display: inline-grid; place-items: center; min-width: 22px; height: 22px; margin-left: 4px; border-radius: 50%; color: #fff; background: var(--purple); font-size: 11px; }
 
-.hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, .recommendation-learning, footer { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
+.hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, footer { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
 .hero { padding: 52px 0 24px; }
 .eyebrow, .section-kicker, .dialog-kicker, .panel-heading span { color: var(--purple-strong); font-size: 11px; font-weight: 850; letter-spacing: .13em; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: end; }
@@ -72,10 +73,18 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .directory-tabs { display: flex; border-bottom: 1px solid var(--line); margin: -12px 0 30px; }
 .directory-tab { padding: 12px 18px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--muted); font-size: 14px; font-weight: 750; cursor: pointer; }
 .directory-tab.active { color: var(--purple-strong); border-bottom-color: var(--purple); }
-.directory-header { display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+.directory-header { display: flex; justify-content: flex-end; gap: 20px; align-items: end; }
 .directory-header h2 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -.035em; line-height: 1.1; }
 .directory-header a { color: var(--purple-strong); font-weight: 750; font-size: 13px; }
 .search-panel { display: flex; gap: 12px; margin-top: 28px; }
+.search-autocomplete { position: relative; flex: 1; min-width: 0; }
+.search-autocomplete .search-box { width: 100%; }
+.search-suggestions { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; right: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fff; box-shadow: 0 16px 32px rgba(15, 31, 25, .16); }
+.search-suggestion { width: 100%; display: flex; justify-content: space-between; gap: 16px; padding: 11px 14px; border: 0; border-bottom: 1px solid #ececf1; color: var(--ink); background: #fff; text-align: left; cursor: pointer; }
+.search-suggestion:last-child { border-bottom: 0; }
+.search-suggestion:hover, .search-suggestion:focus { background: var(--purple-soft); outline: 0; }
+.search-suggestion b { font-size: 13px; }
+.search-suggestion span { color: var(--muted); font-size: 11px; }
 .search-box { flex: 1; min-height: 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; border: 2px solid var(--purple); background: #fff; }
 .search-box span { color: var(--purple); font-size: 25px; }
 .search-box input { flex: 1; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; }
@@ -99,7 +108,18 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .results-toolbar label { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
 .results-toolbar select { min-height: 38px; padding: 0 32px 0 10px; border: 1px solid var(--line); color: var(--ink); background: #fff; }
 
-.people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.directory-results { display: grid; grid-template-columns: minmax(0, 1fr) 32px; gap: 22px; align-items: start; }
+.directory-groups { min-width: 0; }
+.people-grid, .affiliation-grid { display: block; margin-top: 18px; }
+.alphabet-group { scroll-margin-top: 90px; }
+.alphabet-group + .alphabet-group { margin-top: 28px; }
+.alphabet-heading { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--purple-strong); font-size: 18px; line-height: 1; }
+.people-grid-group, .affiliation-grid-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.alphabet-rail { position: sticky; top: 82px; display: grid; gap: 1px; padding: 5px 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.alphabet-rail button { width: 100%; height: 23px; padding: 0; border: 0; color: #777988; background: transparent; font-size: 10px; font-weight: 800; cursor: pointer; }
+.alphabet-rail button:hover:not(:disabled) { color: var(--purple-strong); background: var(--purple-soft); }
+.alphabet-rail button.active { color: #fff; background: var(--purple); }
+.alphabet-rail button:disabled { color: #d0d1d8; cursor: default; }
 .person-card { position: relative; display: flex; flex-direction: column; min-height: 338px; padding: 20px; border: 1px solid var(--line); background: #fff; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .person-card:hover { transform: translateY(-2px); border-color: #b6b1ee; box-shadow: 0 12px 28px rgba(38, 34, 96, .08); }
 .person-card.selected { border: 2px solid var(--purple); padding: 19px; }
@@ -121,7 +141,6 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .person-actions button { flex: 1; }
 .person-actions .save-quick.saved { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
 
-.affiliation-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; margin-top: 18px; }
 .affiliation-card { padding: 22px; border: 1px solid var(--line); background: #fff; }
 .affiliation-card h3 { margin: 0; font-size: 20px; }
 .affiliation-card p { color: var(--muted); font-size: 13px; line-height: 1.55; }
@@ -135,7 +154,7 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .recommendation-hero h1 { max-width: 690px; font-size: clamp(38px, 4vw, 56px); line-height: 1.02; }
 
 .recommendation-controls { padding: 30px; border: 1px solid var(--line); background: #fff; }
-.recommendation-controls h2, .recommendation-section h2, .recommendation-learning h2 { margin: 7px 0 0; font-size: clamp(24px, 2.3vw, 34px); line-height: 1.1; letter-spacing: -.035em; }
+.recommendation-controls h2, .recommendation-section h2 { margin: 7px 0 0; font-size: clamp(24px, 2.3vw, 34px); line-height: 1.1; letter-spacing: -.035em; }
 .recommendation-lenses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; }
 .recommendation-lens { min-height: 124px; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; gap: 5px 12px; padding: 17px; border: 1px solid var(--line); background: #fff; text-align: left; cursor: pointer; }
 .recommendation-lens:hover { border-color: #aaa5ed; }
@@ -252,10 +271,6 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .related-person small { margin-top: 3px; color: var(--muted); }
 .related-person i { grid-column: 2; color: var(--purple-strong); font-size: 11px; font-style: normal; font-weight: 750; }
 
-.recommendation-learning { display: grid; grid-template-columns: 1.2fr .8fr; gap: 70px; align-items: end; margin-top: 70px; margin-bottom: 70px; padding: 38px; color: #fff; background: var(--navy); }
-.recommendation-learning span { color: #a9a4ff; font-size: 10px; font-weight: 850; letter-spacing: .13em; }
-.recommendation-learning h2 { color: #fff; }
-.recommendation-learning > p { margin: 0; color: #c9c9d6; font-size: 14px; line-height: 1.7; }
 
 footer { display: flex; justify-content: space-between; gap: 20px; padding: 24px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 footer p { margin: 0; }
@@ -365,10 +380,10 @@ footer a { color: var(--purple-strong); font-weight: 700; }
   .topbar { padding: 0 18px; }
   .topbar p { display: none; }
   .topbar-actions { margin-left: auto; }
-  .hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, .recommendation-learning, footer { width: min(100% - 28px, 1180px); }
+  .hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, footer { width: min(100% - 28px, 1180px); }
   .hero { padding-top: 44px; }
   .hero-grid { grid-template-columns: 1fr; gap: 24px; }
-  .recommendation-hero-grid, .recommendation-learning { grid-template-columns: 1fr; gap: 26px; }
+  .recommendation-hero-grid { grid-template-columns: 1fr; gap: 26px; }
   .recommendation-hero-grid > *, .recommendation-section-head > * { min-width: 0; }
   .recommendation-lenses, .recommended-people-grid, .recommended-content-grid, .recommendation-filter-bar, .material-grid, .detail-body-grid, .detail-related-grid { grid-template-columns: 1fr; }
   .recommendation-section-head { align-items: start; flex-direction: column; }
@@ -384,7 +399,10 @@ footer a { color: var(--purple-strong); font-weight: 700; }
   .directory-header, .results-toolbar, footer { align-items: start; flex-direction: column; }
   .search-panel { flex-direction: column; }
   .filter-section { grid-template-columns: 1fr; gap: 8px; }
-  .people-grid, .affiliation-grid { grid-template-columns: 1fr; }
+  .directory-results { grid-template-columns: 1fr; }
+  .alphabet-rail { top: 8px; z-index: 25; grid-template-columns: repeat(13, 1fr); order: -1; padding: 4px; }
+  .alphabet-rail button { height: 28px; }
+  .people-grid-group, .affiliation-grid-group { grid-template-columns: 1fr; }
   .choice-grid { grid-template-columns: 1fr; }
   .custom-interest-entry > div { grid-template-columns: 1fr; }
   .compare-bar { width: calc(100% - 24px); min-width: 0; bottom: 12px; }
@@ -435,26 +453,31 @@ footer a { color: var(--purple-strong); font-weight: 700; }
           </div>
 
           <div class="directory-header">
-            <div>
-              <h2 id="directory-title">People related to your interests</h2>
-            </div>
+            <h2 id="directory-title" class="sr-only">People</h2>
+            <a href="https://programs.sigchi.org/chi/2027/people" target="_blank" rel="noreferrer">Official directory</a>
           </div>
 
           <div id="peopleSearchPanel" class="search-panel">
-            <label class="search-box" for="searchInput">
-              <span aria-hidden="true">⌕</span>
-              <input id="searchInput" type="search" placeholder="Search a person, institution, topic or method" autocomplete="off" />
-              <kbd>/</kbd>
-            </label>
+            <div class="search-autocomplete">
+              <label class="search-box" for="searchInput">
+                <span aria-hidden="true">⌕</span>
+                <input id="searchInput" type="search" placeholder="Search a person, institution, topic or method" autocomplete="off" aria-autocomplete="list" aria-controls="peopleSuggestions" aria-expanded="false" />
+                <kbd>/</kbd>
+              </label>
+              <div id="peopleSuggestions" class="search-suggestions" role="listbox" aria-label="People search suggestions" hidden></div>
+            </div>
             <button id="clearFilters" class="secondary-button" type="button">Clear filters</button>
           </div>
 
           <div id="affiliationSearchPanel" class="search-panel" hidden>
-            <label class="search-box" for="affiliationSearchInput">
-              <span aria-hidden="true">⌕</span>
-              <input id="affiliationSearchInput" type="search" placeholder="Search an institution or research community" autocomplete="off" />
-              <kbd>/</kbd>
-            </label>
+            <div class="search-autocomplete">
+              <label class="search-box" for="affiliationSearchInput">
+                <span aria-hidden="true">⌕</span>
+                <input id="affiliationSearchInput" type="search" placeholder="Search an institution or research community" autocomplete="off" aria-autocomplete="list" aria-controls="affiliationSuggestions" aria-expanded="false" />
+                <kbd>/</kbd>
+              </label>
+              <div id="affiliationSuggestions" class="search-suggestions" role="listbox" aria-label="Affiliation search suggestions" hidden></div>
+            </div>
             <button id="clearAffiliationSearch" class="secondary-button" type="button">Clear search</button>
           </div>
 
@@ -469,28 +492,26 @@ footer a { color: var(--purple-strong); font-weight: 700; }
 
           <div class="results-toolbar">
             <p id="resultSummary" aria-live="polite"></p>
-            <label>Sort
-              <select id="sortSelect">
-                <option value="relevance">Why relevant to me</option>
-                <option value="session">Next conference touchpoint</option>
-                <option value="name">Name A–Z</option>
-              </select>
-            </label>
           </div>
 
           <div id="affiliationResultsToolbar" class="results-toolbar affiliation-results-toolbar" hidden>
             <p id="affiliationSummary" aria-live="polite"></p>
           </div>
 
-          <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
-          <div id="affiliationGrid" class="affiliation-grid" aria-live="polite" hidden></div>
-          <div id="affiliationEmptyState" class="empty-state" hidden>
-            <h3>No matching affiliation yet</h3>
-            <p>Try an institution name or a research topic such as Accessibility or Learning Technologies.</p>
-          </div>
-          <div id="emptyState" class="empty-state" hidden>
-            <h3>No exact match yet</h3>
-            <p>Try a neighboring topic or clear one of your relationship filters.</p>
+          <div class="directory-results">
+            <div class="directory-groups">
+              <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
+              <div id="affiliationGrid" class="affiliation-grid" aria-live="polite" hidden></div>
+              <div id="affiliationEmptyState" class="empty-state" hidden>
+                <h3>No matching affiliations</h3>
+                <p>Try another institution or research topic.</p>
+              </div>
+              <div id="emptyState" class="empty-state" hidden>
+                <h3>No matching people</h3>
+                <p>Try another name, institution, topic or method.</p>
+              </div>
+            </div>
+            <nav id="alphabetRail" class="alphabet-rail" aria-label="A to Z directory index"></nav>
           </div>
         </section>
 
@@ -550,10 +571,6 @@ footer a { color: var(--purple-strong); font-weight: 700; }
             <div id="recommendedPeopleGrid" class="recommended-people-grid"></div>
           </section>
 
-          <section class="recommendation-learning" aria-labelledby="recommendation-learning-title">
-            <div><span>FEEDBACK LOOP</span><h2 id="recommendation-learning-title">The system should learn without becoming a black box.</h2></div>
-            <p>“More like this” strengthens the visible recommendation lens. “Not relevant” removes an item and explains what changed. You stay in control of the recommendation logic.</p>
-          </section>
         </div>
 
         <div id="contentDetailView" hidden>
@@ -736,6 +753,48 @@ const peopleBase = [
   }
 ];
 
+const additionalPeople = [
+  {id:"lina-alvarez", initials:"LA", name:"Lina Alvarez", affiliation:"University of California, Berkeley", topics:["Participatory Design","Human-AI Interaction"], relations:["Shared method","Adjacent field"], role:"Paper author", focus:"participatory AI design"},
+  {id:"marcus-brown", initials:"MB", name:"Marcus Brown", affiliation:"Massachusetts Institute of Technology", topics:["Human-AI Interaction","Social Computing"], relations:["Same session","Adjacent field"], role:"Panelist", focus:"collective AI systems"},
+  {id:"priya-desai", initials:"PD", name:"Priya Desai", affiliation:"UCL Interaction Centre", topics:["Accessibility","Human-AI Interaction"], relations:["Shared method"], role:"Poster presenter", focus:"multimodal accessibility"},
+  {id:"omar-el-sayed", initials:"OE", name:"Omar El-Sayed", affiliation:"University of Amsterdam", topics:["Critical Design","Social Computing"], relations:["Adjacent field","Same session"], role:"Session chair", focus:"critical platform studies"},
+  {id:"camille-foster", initials:"CF", name:"Camille Foster", affiliation:"University of Washington", topics:["Learning Technologies","Participatory Design"], relations:["Shared method","Adjacent field"], role:"Workshop organizer", focus:"co-design in learning"},
+  {id:"noah-green", initials:"NG", name:"Noah Green", affiliation:"University of Calgary", topics:["Accessibility","Social Computing"], relations:["Shared method","Same session"], role:"Paper author", focus:"accessible online communities"},
+  {id:"leila-hassan", initials:"LH", name:"Leila Hassan", affiliation:"University of Edinburgh", topics:["Critical Design","Human-AI Interaction"], relations:["Adjacent field"], role:"Doctoral consortium", focus:"critical AI interfaces"},
+  {id:"kenji-ito", initials:"KI", name:"Kenji Ito", affiliation:"The University of Tokyo", topics:["Human-AI Interaction","Learning Technologies"], relations:["Shared method","Adjacent field"], role:"Paper author", focus:"interactive AI literacy"},
+  {id:"amara-johnson", initials:"AJ", name:"Amara Johnson", affiliation:"Cornell University", topics:["Social Computing","Human-AI Interaction"], relations:["Same session","Shared method"], role:"Panelist", focus:"community-centered AI"},
+  {id:"minseo-kim", initials:"MK", name:"Minseo Kim", affiliation:"KAIST", topics:["Learning Technologies","Critical Design"], relations:["Shared method"], role:"Poster presenter", focus:"critical design education"},
+  {id:"sofia-laurent", initials:"SL", name:"Sofia Laurent", affiliation:"Universite Paris-Saclay", topics:["Human-AI Interaction","Accessibility"], relations:["Adjacent field","Same session"], role:"Paper author", focus:"adaptive interaction"},
+  {id:"diego-morales", initials:"DM", name:"Diego Morales", affiliation:"Universitat Pompeu Fabra", topics:["Learning Technologies","Human-AI Interaction"], relations:["Shared method","Adjacent field"], role:"Workshop organizer", focus:"AI-supported learning"},
+  {id:"ada-nwosu", initials:"AN", name:"Ada Nwosu", affiliation:"University of Toronto", topics:["Social Computing","Participatory Design"], relations:["Shared method","Same session"], role:"Paper author", focus:"participatory platform governance"},
+  {id:"wen-qi", initials:"WQ", name:"Wen Qi", affiliation:"Tsinghua University", topics:["Human-AI Interaction","Critical Design"], relations:["Adjacent field"], role:"Poster presenter", focus:"reflective AI tools"},
+  {id:"mateo-silva", initials:"MS", name:"Mateo Silva", affiliation:"University of Sao Paulo", topics:["Participatory Design","Accessibility"], relations:["Shared method","Adjacent field"], role:"Paper author", focus:"inclusive co-design"},
+  {id:"ingrid-thomsen", initials:"IT", name:"Ingrid Thomsen", affiliation:"Aarhus University", topics:["Critical Design","Learning Technologies"], relations:["Adjacent field","Same session"], role:"Session chair", focus:"speculative learning tools"},
+  {id:"ravi-uppal", initials:"RU", name:"Ravi Uppal", affiliation:"Indian Institute of Technology Bombay", topics:["Accessibility","Learning Technologies"], relations:["Shared method"], role:"Workshop organizer", focus:"accessible learning systems"},
+  {id:"eva-van-dijk", initials:"EV", name:"Eva van Dijk", sortName:"Van Dijk", affiliation:"Delft University of Technology", topics:["Participatory Design","Human-AI Interaction"], relations:["Shared method","Adjacent field"], role:"Paper author", focus:"co-designing agentic systems"},
+  {id:"mei-xu", initials:"MX", name:"Mei Xu", affiliation:"The Hong Kong University of Science and Technology", topics:["Social Computing","Human-AI Interaction"], relations:["Same session","Adjacent field"], role:"Panelist", focus:"AI-mediated collaboration"},
+  {id:"hana-yamamoto", initials:"HY", name:"Hana Yamamoto", affiliation:"Keio University", topics:["Learning Technologies","Critical Design"], relations:["Shared method"], role:"Doctoral consortium", focus:"critical AI literacy"},
+  {id:"luca-zhang", initials:"LZ", name:"Luca Zhang", affiliation:"National University of Singapore", topics:["Human-AI Interaction","Accessibility"], relations:["Adjacent field","Same session"], role:"Paper author", focus:"explainable accessible agents"}
+];
+
+const profileColors = ["#3b5ccc", "#177a63", "#b65616", "#8d4bb5", "#2372a9", "#916d16"];
+const prototypePapers = [
+  "ai-shared-control-paper-3", "robots-in-public-paper-4", "learning-together-paper-3",
+  "access-beyond-compliance-paper-4", "community-moderation-paper-3", "creative-tools-paper-4"
+];
+peopleBase.push(...additionalPeople.map((person, index) => ({
+  ...person,
+  author: person.name,
+  color: profileColors[index % profileColors.length],
+  roleDetail: `Prototype ${person.role.toLowerCase()} profile focused on ${person.focus}.`,
+  why: `${person.name} connects ${person.topics[0]} with ${person.topics[1]}, offering a nearby perspective on your research direction.`,
+  bridge: `Your ${person.topics[1]} interest ↔ ${person.name.split(" ")[0]}'s ${person.topics[0]} focus`,
+  community: person.topics.join(" · "),
+  paper: prototypePapers[index % prototypePapers.length],
+  contact: "Use the official CHI directory to verify the public profile and contact route.",
+  fit: 82 - (index % 12)
+})));
+
 // Touchpoints, work titles and "Your schedule" come from Program data and the visitor's plan.
 function hydratePerson(p) {
   const paper = PAPERS[p.paper], s = paper.session, plan = STORE.read("plan");
@@ -796,7 +855,7 @@ const recById = id => contentRecommendations.find(r => r.id === id);
 const paperKey = id => (recById(id) || {}).contentId || null;
 const sessionKey = id => String(id).startsWith("session:") ? String(id).split(":").pop() : (recById(id) || {}).sessionId || null;
 
-const topicOptions = ["All topics", "Human-AI Interaction", "Accessibility", "Critical Design", "Learning Technologies", "Social Computing"];
+const topicOptions = ["All topics", "Human-AI Interaction", "Accessibility", "Critical Design", "Learning Technologies", "Social Computing", "Participatory Design"];
 const relationOptions = ["All relationships", "Adjacent field", "Shared method", "Same session", "Your schedule"];
 const intentions = ["Follow their research", "Meet at a session", "Discuss a method", "Potential collaboration", "Reference for my project", "Introduce to a teammate"];
 const interestOptions = CHI.availableInterests;
@@ -818,7 +877,7 @@ function readStoredInterests() {
 }
 
 const state = {
-  topic: "All topics", relation: "All relationships", query: "", affiliationQuery: "", sort: "relevance", selected: new Set(), activePerson: null,
+  topic: "All topics", relation: "All relationships", query: "", affiliationQuery: "", selected: new Set(), activePerson: null,
   saved: STORE.read("people") || {}, tab: "people",
   interests: readStoredInterests(),
   view: location.hash.startsWith("#recommendations") ? "recommendations" : "people",
@@ -983,18 +1042,151 @@ function createFilters(container, options, key) {
   }));
 }
 
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+let activeAlphabetLetter = "";
+let alphabetScrollTicking = false;
+
+function normalizeSearch(value = "") {
+  return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+function personDirectoryKey(person) {
+  return person.sortName || person.name.replace(/^(Dr|Prof)\.\s+/i, "").trim().split(/\s+/).at(-1) || person.name;
+}
+
+function firstDirectoryLetter(value) {
+  const first = normalizeSearch(value).charAt(0).toUpperCase();
+  return /[A-Z]/.test(first) ? first : "#";
+}
+
+function editDistance(a, b) {
+  const left = normalizeSearch(a), right = normalizeSearch(b);
+  const row = Array.from({length: right.length + 1}, (_, index) => index);
+  for (let i = 1; i <= left.length; i += 1) {
+    let previous = row[0]; row[0] = i;
+    for (let j = 1; j <= right.length; j += 1) {
+      const saved = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (left[i - 1] === right[j - 1] ? 0 : 1));
+      previous = saved;
+    }
+  }
+  return row[right.length];
+}
+
+function fuzzyScore(value, query) {
+  const text = normalizeSearch(value), needle = normalizeSearch(query);
+  if (!needle) return 0;
+  if (text === needle) return 0;
+  if (text.startsWith(needle)) return 1;
+  if (text.includes(needle)) return 2;
+  const words = text.split(" ");
+  const bestDistance = Math.min(...words.map(word => editDistance(word, needle)));
+  const threshold = needle.length <= 4 ? 1 : needle.length <= 8 ? 2 : 3;
+  return bestDistance <= threshold ? 3 + bestDistance / Math.max(needle.length, 1) : Infinity;
+}
+
+function fuzzyTextMatch(value, query) {
+  const needle = normalizeSearch(query);
+  if (!needle) return true;
+  return needle.split(" ").every(token => fuzzyScore(value, token) < Infinity);
+}
+
+function uniqueSuggestions(items) {
+  const seen = new Set();
+  return items.filter(item => {
+    const key = normalizeSearch(item.label);
+    if (!key || seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+
+function suggestionCandidates(kind) {
+  const affiliations = [...new Set(people.map(person => person.affiliation))].map(label => ({label, type:"Institution"}));
+  const topics = [...new Set(people.flatMap(person => person.topics))].map(label => ({label, type:"Topic"}));
+  const communities = [...new Set(people.flatMap(person => person.community.split(" · ")))].map(label => ({label, type:"Community"}));
+  if (kind === "affiliations") return uniqueSuggestions([...affiliations, ...topics, ...communities]);
+  return uniqueSuggestions([...people.map(person => ({label:person.name, type:"Person"})), ...affiliations, ...topics, ...communities]);
+}
+
+function closeSearchSuggestions(kind) {
+  const input = $(kind === "people" ? "#searchInput" : "#affiliationSearchInput");
+  const panel = $(kind === "people" ? "#peopleSuggestions" : "#affiliationSuggestions");
+  panel.hidden = true; panel.innerHTML = ""; input.setAttribute("aria-expanded", "false");
+}
+
+function applySearchSuggestion(kind, value) {
+  if (kind === "people") {
+    state.query = value; $("#searchInput").value = value; renderPeople();
+  } else {
+    state.affiliationQuery = value; $("#affiliationSearchInput").value = value; renderAffiliations();
+  }
+  closeSearchSuggestions(kind);
+}
+
+function renderSearchSuggestions(kind) {
+  const input = $(kind === "people" ? "#searchInput" : "#affiliationSearchInput");
+  const panel = $(kind === "people" ? "#peopleSuggestions" : "#affiliationSuggestions");
+  const query = input.value.trim();
+  if (!query) { closeSearchSuggestions(kind); return; }
+  const results = suggestionCandidates(kind).map(item => ({...item, score:fuzzyScore(item.label, query)}))
+    .filter(item => item.score < Infinity).sort((a, b) => a.score - b.score || a.label.localeCompare(b.label)).slice(0, 7);
+  panel.innerHTML = results.map(item => `<button class="search-suggestion" type="button" role="option" data-value="${escapeHtml(item.label)}"><b>${escapeHtml(item.label)}</b><span>${item.type}</span></button>`).join("");
+  panel.hidden = results.length === 0; input.setAttribute("aria-expanded", String(results.length > 0));
+  $$(".search-suggestion", panel).forEach(button => {
+    button.addEventListener("click", () => applySearchSuggestion(kind, button.dataset.value));
+    button.addEventListener("keydown", event => {
+      const items = $$(".search-suggestion", panel); const index = items.indexOf(button);
+      if (event.key === "ArrowDown") { event.preventDefault(); items[(index + 1) % items.length].focus(); }
+      if (event.key === "ArrowUp") { event.preventDefault(); items[(index - 1 + items.length) % items.length].focus(); }
+      if (event.key === "Escape") { closeSearchSuggestions(kind); input.focus(); }
+    });
+  });
+}
+
+function groupByAlphabet(items, keyFn) {
+  const groups = new Map();
+  items.forEach(item => {
+    const letter = firstDirectoryLetter(keyFn(item));
+    if (!groups.has(letter)) groups.set(letter, []);
+    groups.get(letter).push(item);
+  });
+  return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
+}
+
+function setActiveAlphabet(letter) {
+  activeAlphabetLetter = letter;
+  $$("button[data-letter]", $("#alphabetRail")).forEach(button => button.classList.toggle("active", button.dataset.letter === letter));
+}
+
+function renderAlphabetRail(availableLetters) {
+  const available = new Set(availableLetters);
+  $("#alphabetRail").innerHTML = ALPHABET.map(letter => `<button type="button" data-letter="${letter}" aria-label="Jump to ${letter}" ${available.has(letter) ? "" : "disabled"}>${letter}</button>`).join("");
+  setActiveAlphabet(availableLetters[0] || "");
+}
+
+function updateActiveAlphabetFromScroll() {
+  alphabetScrollTicking = false;
+  const selector = state.tab === "people" ? "#peopleGrid .alphabet-group" : "#affiliationGrid .alphabet-group";
+  const groups = $$(selector).filter(group => !group.hidden);
+  if (!groups.length) return;
+  let active = groups[0].dataset.letter;
+  groups.forEach(group => { if (group.getBoundingClientRect().top <= 150) active = group.dataset.letter; });
+  if (active !== activeAlphabetLetter) setActiveAlphabet(active);
+}
+
+function requestAlphabetUpdate() {
+  if (alphabetScrollTicking) return;
+  alphabetScrollTicking = true; requestAnimationFrame(updateActiveAlphabetFromScroll);
+}
+
 function filteredPeople() {
-  const q = state.query.trim().toLowerCase();
+  const q = state.query.trim();
   return people.filter(person => {
     const matchesTopic = state.topic === "All topics" || person.topics.includes(state.topic);
     const matchesRelation = state.relation === "All relationships" || person.relations.includes(state.relation);
-    const haystack = [person.name, person.affiliation, person.role, person.why, person.community, ...person.topics].join(" ").toLowerCase();
-    return matchesTopic && matchesRelation && (!q || haystack.includes(q));
-  }).sort((a, b) => {
-    if (state.sort === "session") return a.touchpointOrder - b.touchpointOrder;
-    if (state.sort === "name") return a.name.localeCompare(b.name);
-    return b.fit - a.fit;
-  });
+    const haystack = [person.name, person.affiliation, person.role, person.why, person.community, ...person.topics].join(" ");
+    return matchesTopic && matchesRelation && fuzzyTextMatch(haystack, q);
+  }).sort((a, b) => personDirectoryKey(a).localeCompare(personDirectoryKey(b)) || a.name.localeCompare(b.name));
 }
 
 function personCard(person) {
@@ -1008,8 +1200,8 @@ function personCard(person) {
         <div><h3 class="person-name">${escapeHtml(person.name)}</h3><p class="affiliation">${escapeHtml(person.affiliation)}</p></div>
       </div>
       <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
-      <div class="why-card"><span>WHY THIS PERSON?</span><p>${escapeHtml(personalizedReason(person.why))}</p></div>
-      <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>Possible touchpoint</b><br>${escapeHtml(person.touchpoint)}</span></p>
+      <div class="why-card"><span>WHY RELEVANT</span><p>${escapeHtml(personalizedReason(person.why))}</p></div>
+      <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>At CHI</b><br>${escapeHtml(person.touchpoint)}</span></p>
       <div class="person-actions">
         <button class="secondary-button save-quick ${isSaved ? "saved" : ""}" type="button">${isSaved ? "Saved with intention" : "Save with intention"}</button>
         <button class="primary-button view-details" type="button">View details</button>
@@ -1019,11 +1211,13 @@ function personCard(person) {
 
 function renderPeople() {
   const results = filteredPeople();
-  peopleGrid.innerHTML = results.map(personCard).join("");
-  $("#resultSummary").innerHTML = `<strong>${results.length} people</strong> · explanations are based on your ${escapeHtml(state.interests.primary)} starting point`;
+  const groups = groupByAlphabet(results, personDirectoryKey);
+  peopleGrid.innerHTML = groups.map(([letter, members]) => `<section class="alphabet-group" id="people-letter-${letter}" data-letter="${letter}" aria-labelledby="people-heading-${letter}"><h3 class="alphabet-heading" id="people-heading-${letter}">${letter}</h3><div class="people-grid-group">${members.map(personCard).join("")}</div></section>`).join("");
+  $("#resultSummary").innerHTML = `<strong>${results.length} ${state.query.trim() ? "matches" : "people"}</strong>`;
   emptyState.hidden = results.length > 0 || state.tab !== "people";
   peopleGrid.hidden = state.tab !== "people";
   bindCardEvents();
+  if (state.tab === "people") renderAlphabetRail(groups.map(([letter]) => letter));
 }
 
 function bindCardEvents() {
@@ -1102,19 +1296,19 @@ function openSavedPanel() {
 }
 
 function renderAffiliations() {
-  const query = state.affiliationQuery.trim().toLowerCase();
+  const query = state.affiliationQuery.trim();
   const groups = [...new Set(people.map(p => p.affiliation))].map(name => {
     const members = people.filter(p => p.affiliation === name);
     return {name, members, topics: [...new Set(members.flatMap(p => p.topics))]};
-  }).filter(group => !query || [group.name, ...group.topics].join(" ").toLowerCase().includes(query));
-  $("#affiliationSummary").innerHTML = query
-    ? `<strong>${groups.length} affiliation${groups.length === 1 ? "" : "s"}</strong> matching “${escapeHtml(state.affiliationQuery.trim())}”`
-    : `<strong>${groups.length} affiliations</strong> · search by institution or research community`;
-  affiliationGrid.innerHTML = groups.map(group => `<article class="affiliation-card"><h3>${escapeHtml(group.name)}</h3><p>${group.members.length} related ${group.members.length === 1 ? "person" : "people"} · ${group.topics.map(escapeHtml).join(" · ")}</p><button type="button" data-affiliation="${escapeHtml(group.name)}">View related people →</button></article>`).join("");
+  }).filter(group => fuzzyTextMatch([group.name, ...group.topics].join(" "), query)).sort((a, b) => a.name.localeCompare(b.name));
+  const alphabeticalGroups = groupByAlphabet(groups, group => group.name);
+  $("#affiliationSummary").innerHTML = `<strong>${groups.length} ${query ? "matches" : "affiliations"}</strong>`;
+  affiliationGrid.innerHTML = alphabeticalGroups.map(([letter, members]) => `<section class="alphabet-group" id="affiliations-letter-${letter}" data-letter="${letter}" aria-labelledby="affiliations-heading-${letter}"><h3 class="alphabet-heading" id="affiliations-heading-${letter}">${letter}</h3><div class="affiliation-grid-group">${members.map(group => `<article class="affiliation-card"><h3>${escapeHtml(group.name)}</h3><p>${group.members.length} ${group.members.length === 1 ? "person" : "people"} · ${group.topics.map(escapeHtml).join(" · ")}</p><button type="button" data-affiliation="${escapeHtml(group.name)}">View related people</button></article>`).join("")}</div></section>`).join("");
   affiliationEmptyState.hidden = groups.length > 0 || state.tab !== "affiliations";
   $$('[data-affiliation]', affiliationGrid).forEach(button => button.addEventListener("click", () => {
     state.tab = "people"; state.query = button.dataset.affiliation; $("#searchInput").value = state.query; setTab("people"); renderPeople();
   }));
+  if (state.tab === "affiliations") renderAlphabetRail(alphabeticalGroups.map(([letter]) => letter));
 }
 
 function setTab(tab) {
@@ -1128,7 +1322,7 @@ function setTab(tab) {
   $("#peopleSearchPanel").hidden = tab !== "people";
   $("#affiliationSearchPanel").hidden = tab !== "affiliations";
   $("#affiliationResultsToolbar").hidden = tab !== "affiliations";
-  $("#directory-title").textContent = tab === "people" ? "People related to your interests" : "Affiliations connected to this network";
+  $("#directory-title").textContent = tab === "people" ? "People" : "Affiliations";
   emptyState.hidden = true;
   affiliationEmptyState.hidden = true;
   if (tab === "affiliations") renderAffiliations(); else renderPeople();
@@ -1319,10 +1513,13 @@ function showToast(message) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 
-$("#searchInput").addEventListener("input", event => { state.query = event.target.value; renderPeople(); });
-$("#affiliationSearchInput").addEventListener("input", event => { state.affiliationQuery = event.target.value; renderAffiliations(); });
-$("#clearAffiliationSearch").addEventListener("click", () => { state.affiliationQuery = ""; $("#affiliationSearchInput").value = ""; renderAffiliations(); $("#affiliationSearchInput").focus(); });
-$("#sortSelect").addEventListener("change", event => { state.sort = event.target.value; renderPeople(); });
+$("#searchInput").addEventListener("input", event => { state.query = event.target.value; renderPeople(); renderSearchSuggestions("people"); });
+$("#searchInput").addEventListener("focus", () => renderSearchSuggestions("people"));
+$("#searchInput").addEventListener("keydown", event => { if (event.key === "ArrowDown" && !$("#peopleSuggestions").hidden) { event.preventDefault(); $(".search-suggestion", $("#peopleSuggestions"))?.focus(); } });
+$("#affiliationSearchInput").addEventListener("input", event => { state.affiliationQuery = event.target.value; renderAffiliations(); renderSearchSuggestions("affiliations"); });
+$("#affiliationSearchInput").addEventListener("focus", () => renderSearchSuggestions("affiliations"));
+$("#affiliationSearchInput").addEventListener("keydown", event => { if (event.key === "ArrowDown" && !$("#affiliationSuggestions").hidden) { event.preventDefault(); $(".search-suggestion", $("#affiliationSuggestions"))?.focus(); } });
+$("#clearAffiliationSearch").addEventListener("click", () => { state.affiliationQuery = ""; $("#affiliationSearchInput").value = ""; closeSearchSuggestions("affiliations"); renderAffiliations(); $("#affiliationSearchInput").focus(); });
 $("#clearFilters").addEventListener("click", () => { state.topic = topicOptions[0]; state.relation = relationOptions[0]; state.query = ""; $("#searchInput").value = ""; createFilters($("#topicFilters"), topicOptions, "topic"); createFilters($("#relationFilters"), relationOptions, "relation"); renderPeople(); });
 $("#peopleTab").addEventListener("click", () => setTab("people"));
 $("#affiliationsTab").addEventListener("click", () => setTab("affiliations"));
@@ -1384,11 +1581,20 @@ $("#interestForm").addEventListener("submit", event => {
 });
 document.addEventListener("click", event => {
   if (interestDialog.open && !event.target.closest(".interest-dropdown")) closeInterestDropdowns();
+  if (!event.target.closest("#peopleSearchPanel")) closeSearchSuggestions("people");
+  if (!event.target.closest("#affiliationSearchPanel")) closeSearchSuggestions("affiliations");
 });
 document.addEventListener("keydown", event => {
   if (event.key === "/" && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") { event.preventDefault(); $(state.tab === "affiliations" ? "#affiliationSearchInput" : "#searchInput").focus(); }
   if (event.key === "Escape") closeDrawers();
 });
+$("#alphabetRail").addEventListener("click", event => {
+  const button = event.target.closest("button[data-letter]");
+  if (!button || button.disabled) return;
+  document.getElementById(`${state.tab}-letter-${button.dataset.letter}`)?.scrollIntoView({behavior:"smooth", block:"start"});
+  setActiveAlphabet(button.dataset.letter);
+});
+window.addEventListener("scroll", requestAlphabetUpdate, {passive:true});
 
 createFilters($("#topicFilters"), topicOptions, "topic");
 createFilters($("#relationFilters"), relationOptions, "relation");
