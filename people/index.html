@@ -120,22 +120,21 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .alphabet-rail button:hover:not(:disabled) { color: var(--purple-strong); background: var(--purple-soft); }
 .alphabet-rail button.active { color: #fff; background: var(--purple); }
 .alphabet-rail button:disabled { color: #d0d1d8; cursor: default; }
-.person-card { position: relative; display: flex; flex-direction: column; min-height: 338px; padding: 20px; border: 1px solid var(--line); background: #fff; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.person-card { position: relative; display: flex; flex-direction: column; min-height: 252px; padding: 20px; border: 1px solid var(--line); background: #fff; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .person-card:hover { transform: translateY(-2px); border-color: #b6b1ee; box-shadow: 0 12px 28px rgba(38, 34, 96, .08); }
 .person-card.selected { border: 2px solid var(--purple); padding: 19px; }
 .select-person { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer; }
 .person-card.selected .select-person { color: #fff; border-color: var(--purple); background: var(--purple); }
 .person-head { display: flex; gap: 14px; align-items: center; padding-right: 34px; }
-.avatar { flex: 0 0 auto; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--avatar, var(--purple)); font-size: 17px; font-weight: 820; }
+.avatar { flex: 0 0 auto; width: 58px; height: 58px; display: grid; place-items: center; overflow: hidden; border-radius: 50%; background: #ececf3; }
+.avatar svg { width: 100%; height: 100%; display: block; }
+.drawer-profile-head .avatar { width: 72px; height: 72px; }
 .person-name { margin: 0; font-size: 19px; letter-spacing: -.02em; }
 .affiliation { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
 .role-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 .tag { padding: 5px 8px; border-radius: 4px; background: #f0f0f5; color: #555765; font-size: 10px; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
 .tag.role { color: var(--green); background: var(--green-soft); }
-.why-card { margin-top: 14px; padding: 13px; border-left: 3px solid var(--purple); background: #eef3f0; }
-.why-card span { display: block; color: var(--purple-strong); font-size: 10px; font-weight: 850; letter-spacing: .1em; }
-.why-card p { margin: 6px 0 0; color: #414250; font-size: 13px; line-height: 1.45; }
-.touchpoint { display: flex; gap: 8px; align-items: start; margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.touchpoint { display: flex; gap: 8px; align-items: start; margin: 16px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
 .touchpoint b { color: var(--ink); }
 .person-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
 .person-actions button { flex: 1; }
@@ -905,6 +904,31 @@ function escapeHtml(value = "") {
   return value.replace(/[&<>'"]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#039;",'"':"&quot;"}[char]));
 }
 
+function avatarHash(value = "") {
+  return [...value].reduce((hash, char) => ((hash << 5) - hash + char.charCodeAt(0)) | 0, 0) >>> 0;
+}
+
+function personAvatar(person) {
+  const seed = avatarHash(person.id || person.name);
+  const backgrounds = ["#dfe8ff", "#e5f4eb", "#f7e6dd", "#eee4f8", "#e1eff4", "#f6edcf"];
+  const skins = ["#f2c7a5", "#dca27e", "#b97858", "#8b573e", "#f0b98f"];
+  const hairs = ["#241d1b", "#4d3025", "#7a4d32", "#17191f", "#a86f3e"];
+  const shirts = ["#5048d8", "#177a63", "#b65616", "#8d4bb5", "#2372a9", "#916d16"];
+  const background = backgrounds[seed % backgrounds.length];
+  const skin = skins[(seed >>> 3) % skins.length];
+  const hair = hairs[(seed >>> 6) % hairs.length];
+  const shirt = shirts[(seed >>> 9) % shirts.length];
+  const hairStyle = (seed >>> 12) % 4;
+  const hairShape = [
+    `<path d="M19 32c0-13 8-21 21-21s21 8 21 21c-6-7-13-10-21-10s-15 3-21 10Z" fill="${hair}"/>`,
+    `<path d="M18 34c-1-15 7-24 22-24 14 0 23 8 22 23-8-8-13-11-22-11-8 0-15 4-22 12Z" fill="${hair}"/><circle cx="22" cy="19" r="8" fill="${hair}"/>`,
+    `<path d="M20 31c1-14 8-21 20-21 13 0 20 7 21 21-7-5-14-8-21-8s-13 3-20 8Z" fill="${hair}"/><path d="M18 30h6v18h-6zM56 30h6v18h-6z" fill="${hair}"/>`,
+    `<path d="M18 33c0-14 8-23 22-23 15 0 23 9 22 23-5-5-10-8-15-9l-4 7-5-8c-7 1-13 4-20 10Z" fill="${hair}"/>`
+  ][hairStyle];
+  const glasses = (seed >>> 15) % 3 === 0 ? `<g fill="none" stroke="#35343d" stroke-width="1.6"><rect x="26" y="34" width="10" height="7" rx="3"/><rect x="44" y="34" width="10" height="7" rx="3"/><path d="M36 37h8"/></g>` : "";
+  return `<span class="avatar generated-avatar" aria-hidden="true"><svg viewBox="0 0 80 80" role="img"><circle cx="40" cy="40" r="40" fill="${background}"/><path d="M12 80c2-17 12-26 28-26s26 9 28 26H12Z" fill="${shirt}"/><circle cx="40" cy="36" r="21" fill="${skin}"/>${hairShape}<circle cx="32" cy="38" r="1.7" fill="#25242a"/><circle cx="48" cy="38" r="1.7" fill="#25242a"/>${glasses}<path d="M34 47c4 3 8 3 12 0" fill="none" stroke="#8f4f4e" stroke-width="1.8" stroke-linecap="round"/></svg></span>`;
+}
+
 function formatInterestList(items) {
   if (!items.length) return "No additional directions selected yet";
   if (items.length === 1) return items[0];
@@ -1196,11 +1220,10 @@ function personCard(person) {
     <article class="person-card ${isSelected ? "selected" : ""}" data-person-id="${person.id}">
       <button class="select-person" type="button" aria-label="${isSelected ? "Deselect" : "Select"} ${escapeHtml(person.name)}" aria-pressed="${isSelected}">${isSelected ? "✓" : "+"}</button>
       <div class="person-head">
-        <div class="avatar" style="--avatar:${person.color}" aria-hidden="true">${person.initials}</div>
+        ${personAvatar(person)}
         <div><h3 class="person-name">${escapeHtml(person.name)}</h3><p class="affiliation">${escapeHtml(person.affiliation)}</p></div>
       </div>
       <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
-      <div class="why-card"><span>WHY RELEVANT</span><p>${escapeHtml(personalizedReason(person.why))}</p></div>
       <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>At CHI</b><br>${escapeHtml(person.touchpoint)}</span></p>
       <div class="person-actions">
         <button class="secondary-button save-quick ${isSaved ? "saved" : ""}" type="button">${isSaved ? "Saved with intention" : "Save with intention"}</button>
@@ -1243,12 +1266,10 @@ function updateCompareBar() {
 function openDrawer(person) {
   state.activePerson = person;
   $("#drawerContent").innerHTML = `
-    <div class="drawer-profile-head"><div class="avatar" style="--avatar:${person.color}">${person.initials}</div><div><h2 id="drawerName">${escapeHtml(person.name)}</h2><p class="affiliation">${escapeHtml(person.affiliation)}</p></div></div>
-    <div class="drawer-section"><span>CONFERENCE ROLE</span><h3>${escapeHtml(person.role)}</h3><p>${escapeHtml(person.roleDetail)}</p><div class="role-row">${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div></div>
-    <div class="drawer-section"><span>YOUR RELATIONSHIP</span><h3>${escapeHtml(person.bridge)}</h3><p>${escapeHtml(personalizedReason(person.why))}</p></div>
-    <div class="drawer-section"><span>NETWORK & COMMUNITY</span><h3>${escapeHtml(person.community)}</h3><div class="drawer-network"><div class="network-node">Your ${escapeHtml(state.interests.primary)} work</div><span>↔</span><div class="network-node">${escapeHtml(person.topics[1] || person.topics[0])}</div></div></div>
-    <div class="drawer-section"><span>WHERE YOU MAY MEET</span><h3>${escapeHtml(person.touchpoint)}</h3><p><b>Related work:</b> ${escapeHtml(person.work)}</p><p class="drawer-links"><a href="${programHref(person.sessionId)}">Open session in Program →</a><a href="${mapHref(person.room)}">Show room on Map →</a></p></div>
-    <div class="drawer-section"><span>FOLLOW-UP</span><h3>Keep the context, not only the name</h3><ul><li>${escapeHtml(person.contact)}</li><li>Save why this person matters to your work</li><li>Record the session, poster or recommendation that led you here</li></ul></div>
+    <div class="drawer-profile-head">${personAvatar(person)}<div><h2 id="drawerName">${escapeHtml(person.name)}</h2><p class="affiliation">${escapeHtml(person.affiliation)}</p></div></div>
+    <div class="drawer-section"><span>CONFERENCE ROLE</span><h3>${escapeHtml(person.role)}</h3><div class="role-row">${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div></div>
+    <div class="drawer-section"><span>AT CHI</span><h3>${escapeHtml(person.touchpoint)}</h3><p>${escapeHtml(person.work)}</p><p class="drawer-links"><a href="${programHref(person.sessionId)}">Open session in Program</a><a href="${mapHref(person.room)}">Show room on Map</a></p></div>
+    <div class="drawer-section"><span>NEXT STEP</span><p>${escapeHtml(person.contact)}</p></div>
     <div class="drawer-actions"><button id="drawerSave" class="primary-button" type="button">${state.saved[person.id] ? "Update saved intention" : "Save with intention"}</button><a class="secondary-button" href="${programHref(person.sessionId)}">See their paper in Program</a></div>`;
   drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); backdrop.hidden = false;
   $("#drawerSave").addEventListener("click", () => openSaveDialog(person));
@@ -1353,7 +1374,7 @@ function recommendationPersonCard(person) {
   return `
     <article class="recommendation-person-card ${liked ? "liked" : ""}" data-recommendation-id="${key}" data-person-id="${person.id}">
       <div class="person-head">
-        <div class="avatar" style="--avatar:${person.color}" aria-hidden="true">${person.initials}</div>
+        ${personAvatar(person)}
         <div><h3 class="person-name">${escapeHtml(person.name)}</h3><p class="affiliation">${escapeHtml(person.affiliation)}</p></div>
       </div>
       <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(topic => `<span class="tag">${escapeHtml(topic)}</span>`).join("")}</div>
@@ -1408,7 +1429,7 @@ function renderContentDetail(item) {
     <section class="research-materials" aria-labelledby="materials-title"><div class="detail-section-heading"><p class="section-kicker">RESEARCH MATERIALS</p><h2 id="materials-title">Read or watch before choosing a session.</h2></div><div class="material-grid"><article class="material-card ${item.paperAvailable ? "" : "unavailable-card"}"><div class="material-icon">▤</div><div><span>PAPER</span><h3>Read Full Paper</h3><p>${item.paperAvailable ? `Open the paper for “${escapeHtml(item.title)}”.` : "A paper is not available for this item."}</p></div><button class="material-action primary-button" type="button" ${item.paperAvailable ? "" : "disabled"}>${item.paperAvailable ? "Read Full Paper" : "Paper unavailable"}</button></article><article class="material-card ${item.videoAvailable ? "" : "unavailable-card"}"><div class="material-icon">▶</div><div><span>PRESENTATION VIDEO</span><h3>Watch Presentation</h3><p>${item.videoAvailable ? `Presentation recording · ${escapeHtml(item.videoDuration)}.` : "A presentation video has not been published."}</p></div><button class="material-action primary-button" type="button" ${item.videoAvailable ? "" : "disabled"}>${item.videoAvailable ? "Watch Presentation" : "Video unavailable"}</button></article></div></section>
     <section class="detail-body-grid"><article class="detail-copy"><p class="section-kicker">ABSTRACT & TOPICS</p><h2>Understand the research first.</h2><p>${escapeHtml(item.abstract)}</p><div class="role-row"><span class="tag">${escapeHtml(item.topic)}</span><span class="tag">${escapeHtml(item.bridge)}</span></div></article><aside class="session-summary"><p class="section-kicker">CONFERENCE CONNECTION</p><h2>${sessions.length} ${sessions.length === 1 ? "session" : "sessions"}</h2><p>Each session below opens independently, so you can check its time, place and format before adding it to your schedule.</p></aside></section>
     <section class="detail-sessions"><div class="detail-section-heading"><p class="section-kicker">SESSIONS, TIME & LOCATION</p><h2>Open every session before deciding.</h2></div><div class="detail-session-list">${sessionCards}</div></section>
-    <section class="detail-related"><p class="section-kicker">RELATED RESEARCH & PEOPLE</p><h2>Continue into the conference network.</h2><div class="detail-related-grid">${relatedPeople.map(person => `<button class="related-person" type="button" data-person-id="${person.id}"><span class="avatar" style="--avatar:${person.color}">${person.initials}</span><span><b>${escapeHtml(person.name)}</b><small>${escapeHtml(person.affiliation)}</small></span><i>View profile →</i></button>`).join("")}</div></section>`;
+    <section class="detail-related"><p class="section-kicker">RELATED RESEARCH & PEOPLE</p><h2>Continue into the conference network.</h2><div class="detail-related-grid">${relatedPeople.map(person => `<button class="related-person" type="button" data-person-id="${person.id}">${personAvatar(person)}<span><b>${escapeHtml(person.name)}</b><small>${escapeHtml(person.affiliation)}</small></span><i>View profile →</i></button>`).join("")}</div></section>`;
   $("#backToRecommendations").addEventListener("click", () => history.state && history.state.recDetail ? history.back() : setView("recommendations"));
   const toggleSave = () => { state.contentSaves.has(item.id) ? state.contentSaves.delete(item.id) : state.contentSaves.add(item.id); persistRecommendationFeedback(); renderRecommendations(); renderContentDetail(item); showToast(state.contentSaves.has(item.id) ? "Paper saved." : "Paper removed."); };
   const toggleSchedule = () => { state.scheduleSaves.has(item.id) ? state.scheduleSaves.delete(item.id) : state.scheduleSaves.add(item.id); persistRecommendationFeedback(); renderRecommendations(); renderContentDetail(item); showToast(state.scheduleSaves.has(item.id) ? "Added to My plan." : "Removed from My plan."); };
@@ -1606,7 +1627,7 @@ function openAuthor(name) {
   const papers = Object.values(PAPERS).filter(p => p.authors.includes(name));
   if (!papers.length) { showToast(`${name} is not in this prototype’s Program.`); return; }
   $("#drawerContent").innerHTML = `
-    <div class="drawer-profile-head"><div class="avatar" style="--avatar:#314f44">${escapeHtml(name.split(" ").map(w => w[0]).join("").slice(0, 2))}</div><div><h2 id="drawerName">${escapeHtml(name)}</h2><p class="affiliation">Author in the CHI 2027 Program</p></div></div>
+    <div class="drawer-profile-head">${personAvatar({id: clean, name: clean})}<div><h2 id="drawerName">${escapeHtml(name)}</h2><p class="affiliation">Author in the CHI 2027 Program</p></div></div>
     <div class="drawer-section"><span>IN THE PROGRAM</span><h3>${papers.length} ${papers.length === 1 ? "paper" : "papers"}</h3>
       <ul class="author-papers">${papers.map(p => `<li><a href="${programHref(p.session.id)}"><b>${escapeHtml(p.title)}</b><small>${escapeHtml(sessionWhen(p.session))} · ${escapeHtml(p.session.title)} · ${escapeHtml(CHI.roomLabel(p.session.room))}</small></a></li>`).join("")}</ul></div>
     <div class="drawer-section"><span>ABOUT THIS PROFILE</span><p>Only a few example people have full profiles in this prototype. Everyone else is listed by their papers.</p></div>`;
