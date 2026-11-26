@@ -51,23 +51,29 @@ button { color: inherit; }
 
 .app-shell { min-height: 100vh; }
 .main-content { min-height: 100vh; }
-.topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.92); }
+.topbar { display: none; }
 .topbar p { margin: 0; color: var(--muted); font-size: 13px; }
 .topbar-actions { display: flex; align-items: center; gap: 14px; }
 .text-button { border: 0; background: transparent; color: var(--purple-strong); font-weight: 700; text-decoration: none; cursor: pointer; }
 .text-button span { display: inline-grid; place-items: center; min-width: 22px; height: 22px; margin-left: 4px; border-radius: 50%; color: #fff; background: var(--purple); font-size: 11px; }
 
 .hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, footer { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
-.hero { padding: 52px 0 24px; }
+.hero { padding: 36px 0 20px; }
 .eyebrow, .section-kicker, .dialog-kicker, .panel-heading span { color: var(--purple-strong); font-size: 11px; font-weight: 850; letter-spacing: .13em; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: end; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 60px; align-items: start; }
 h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-height: .98; letter-spacing: -.055em; font-weight: 720; }
+body.chi-shell-body #page-title.page-hero-title,
+body.chi-shell-body #recommendations-title.page-hero-title {
+  font: 600 var(--t-page)/1.02 var(--serif) !important;
+  letter-spacing: -.04em !important;
+}
 .hero-copy { max-width: 760px; margin: 22px 0 0; color: #555766; font-size: 16px; line-height: 1.6; }
-.interest-card { padding: 22px; border-left: 4px solid var(--purple); background: #fff; box-shadow: 0 6px 24px rgba(15, 31, 25, .06); }
-.interest-card span { display: block; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.interest-card strong { display: block; margin-top: 7px; font-size: 17px; }
-.interest-card p { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
-.interest-card button { border: 0; padding: 0; color: var(--purple-strong); background: transparent; font-size: 13px; font-weight: 750; cursor: pointer; }
+.interest-bar { min-width: 137px; min-height: 47px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; border: 1px solid var(--ink); border-radius: 7px; color: var(--ink); background: transparent; cursor: pointer; }
+.interest-bar:hover { border-color: var(--purple); background: rgba(255,255,255,.45); }
+.interest-bar:focus-visible { outline-offset: 4px; }
+.interest-bar > span { font-size: 13px; line-height: 1; }
+.interest-bar > strong { font-size: 13px; font-weight: 600; }
+.interest-bar > em { min-width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 50%; color: var(--purple-strong); background: var(--purple-soft); font-size: 11px; font-style: normal; font-weight: 600; }
 
 .directory { padding: 30px; background: #fff; border: 1px solid var(--line); }
 .directory-tabs { display: flex; border-bottom: 1px solid var(--line); margin: -12px 0 30px; }
@@ -118,7 +124,7 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .alphabet-rail { position: sticky; top: 82px; display: grid; gap: 1px; padding: 5px 0; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
 .alphabet-rail button { width: 100%; height: 23px; padding: 0; border: 0; color: #777988; background: transparent; font-size: 10px; font-weight: 800; cursor: pointer; }
 .alphabet-rail button:hover:not(:disabled) { color: var(--purple-strong); background: var(--purple-soft); }
-.alphabet-rail button.active { color: #fff; background: var(--purple); }
+.alphabet-rail button.active { color: #fff; background: var(--deep); font-weight: 800; }
 .alphabet-rail button:disabled { color: #d0d1d8; cursor: default; }
 .person-card { position: relative; display: flex; flex-direction: column; min-height: 252px; padding: 20px; border: 1px solid var(--line); background: #fff; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .person-card:hover { transform: translateY(-2px); border-color: #b6b1ee; box-shadow: 0 12px 28px rgba(38, 34, 96, .08); }
@@ -137,8 +143,7 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .touchpoint { display: flex; gap: 8px; align-items: start; margin: 16px 0 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
 .touchpoint b { color: var(--ink); }
 .person-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
-.person-actions button { flex: 1; }
-.person-actions .save-quick.saved { color: var(--purple-strong); border-color: var(--purple); background: var(--purple-soft); }
+.person-actions button { flex: 1; font-weight: 400; }
 
 .affiliation-card { padding: 22px; border: 1px solid var(--line); background: #fff; }
 .affiliation-card h3 { margin: 0; font-size: 20px; }
@@ -148,9 +153,9 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .empty-state h3 { margin: 0; }
 .empty-state p { color: var(--muted); }
 
-.recommendation-hero { padding: 68px 0 36px; }
-.recommendation-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 60px; align-items: end; margin-top: 18px; }
-.recommendation-hero h1 { max-width: 690px; font-size: clamp(38px, 4vw, 56px); line-height: 1.02; }
+.recommendation-hero { padding: 36px 0 24px; }
+.recommendation-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 60px; align-items: start; }
+.recommendation-hero h1 { max-width: 690px; }
 
 .recommendation-controls { padding: 30px; border: 1px solid var(--line); background: #fff; }
 .recommendation-controls h2, .recommendation-section h2 { margin: 7px 0 0; font-size: clamp(24px, 2.3vw, 34px); line-height: 1.1; letter-spacing: -.035em; }
@@ -163,8 +168,9 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .recommendation-lens small { color: var(--muted); line-height: 1.45; }
 .recommendation-status { margin: 18px 0 0; color: var(--muted); font-size: 12px; }
 .recommendation-filter-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 12px; align-items: end; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
-.recommendation-filter-bar label { display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
-.recommendation-filter-bar select { width: 100%; min-height: 44px; padding: 0 34px 0 12px; border: 1px solid var(--line); color: var(--ink); background: #fff; text-transform: none; letter-spacing: 0; }
+.recommendation-filter-bar label { position: relative; display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
+.recommendation-filter-bar label::after { content: ""; position: absolute; right: 8px; bottom: 19px; width: 7px; height: 7px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); pointer-events: none; }
+.recommendation-filter-bar select { width: 100%; min-height: 44px; padding: 0 24px 0 12px; appearance: none; -webkit-appearance: none; border: 1px solid var(--line); color: var(--ink); background: #fff; text-transform: none; letter-spacing: 0; }
 .recommendation-filter-bar button { min-height: 44px; }
 
 .recommendation-section { padding: 62px 0 0; }
@@ -191,21 +197,23 @@ h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 4.5vw, 64px); line-heig
 .recommendation-person-card.liked, .content-recommendation-card.liked { border-color: #8fa89c; box-shadow: inset 0 3px 0 var(--purple); }
 .recommendation-empty { grid-column: 1 / -1; padding: 32px; border: 1px dashed #bbbcc8; background: #f9f9fc; color: var(--muted); text-align: center; }
 
-.recommended-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 26px; }
-.content-recommendation-card { display: flex; flex-direction: column; min-height: 280px; padding: 22px; border: 1px solid var(--line); background: #fff; }
+.recommended-content-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 26px; }
+.content-recommendation-card { display: flex; flex-direction: column; min-height: 420px; padding: 18px; border: 1px solid var(--line); background: #fff; }
 .content-type-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
 .content-type { padding: 6px 9px; color: #fff; background: var(--purple); font-size: 10px; font-weight: 850; letter-spacing: .08em; }
 .content-type.session { background: var(--green); }
 .content-type.talk { background: var(--orange); }
 .content-lens { color: var(--muted); font-size: 11px; font-weight: 700; }
-.content-recommendation-card h3 { margin: 20px 0 7px; font-size: 21px; line-height: 1.25; letter-spacing: -.02em; }
+.content-recommendation-card h3 { margin: 16px 0 7px; font-size: 18px; line-height: 1.25; letter-spacing: -.02em; }
 .content-title-button { padding: 0; border: 0; color: inherit; background: transparent; font-size: inherit; font-weight: 760; line-height: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
 .content-title-button:hover { color: var(--purple-strong); text-decoration: underline; text-underline-offset: 4px; }
 .content-authors { margin: 0; color: var(--ink); font-size: 12px; font-weight: 750; }
-.content-description { margin: 16px 0 0; color: #555766; font-size: 13px; line-height: 1.55; }
 .content-recommendation-card .content-meta { margin: 0; color: var(--muted); font-size: 12px; }
 .content-recommendation-card .content-why { margin: 18px 0; padding: 12px; background: #eef3f0; color: #474856; font-size: 13px; line-height: 1.5; }
-.content-recommendation-card .recommendation-actions { margin-top: auto; grid-template-columns: 1fr 1fr; }
+.content-recommendation-card .recommendation-reason { margin: 14px 0 12px; padding: 10px; }
+.content-recommendation-card .recommendation-reason p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; margin-top: 5px; font-size: 11px; line-height: 1.4; }
+.content-recommendation-card .recommendation-actions { margin-top: auto; grid-template-columns: 1fr; }
+.content-recommendation-card .recommendation-actions button { width: 100%; min-height: 38px; }
 .content-drawer-head { align-items: flex-start; }
 .content-drawer-head .content-type { flex: 0 0 auto; margin-top: 5px; }
 .content-resources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; padding-top: 14px; border-top: 1px solid var(--line); }
@@ -292,8 +300,8 @@ footer a { color: var(--purple-strong); font-weight: 700; }
 .drawer-section ul { padding-left: 18px; }
 .drawer-network { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 14px; }
 .network-node { padding: 12px 8px; border: 1px solid var(--line); background: #fafafd; text-align: center; font-size: 11px; font-weight: 750; }
-.drawer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 28px; }
-.drawer-actions a, .drawer-actions button { min-height: 46px; display: grid; place-items: center; text-decoration: none; }
+.drawer-actions { display: grid; grid-template-columns: 1fr; gap: 10px; padding-bottom: 28px; }
+.drawer-actions a, .drawer-actions button { width: 100%; min-height: 52px; display: grid; place-items: center; justify-content: center; text-align: center; text-decoration: none; }
 
 .saved-panel { z-index: 80; background: #fbfbfe; }
 .panel-heading { display: flex; justify-content: space-between; align-items: start; }
@@ -324,6 +332,10 @@ footer a { color: var(--purple-strong); font-weight: 700; }
 .save-dialog select { min-height: 46px; padding: 0 12px; }
 .note-field { margin-top: 22px; }
 .note-field textarea { display: block; margin-top: 10px; padding: 12px; resize: vertical; }
+.other-reason-field { display: block; margin-top: 12px; font-weight: 780; }
+.other-reason-field textarea { display: block; margin-top: 10px; padding: 12px; resize: vertical; }
+#otherReason::placeholder, #privateNote::placeholder { color: rgba(85, 87, 102, .42); font-weight: 400; opacity: 1; }
+#saveDialog form, #saveDialog form * { font-size: 14px; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
 
 .interest-dialog { width: min(900px, calc(100% - 28px)); min-height: min(600px, calc(100vh - 28px)); overflow-y: auto; }
@@ -373,6 +385,7 @@ footer a { color: var(--purple-strong); font-weight: 700; }
   .nav-separator, .sidebar-note { display: none; }
   .main-content { margin-left: 0; }
   .compare-bar { left: 50%; }
+  .recommended-content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {
@@ -380,9 +393,10 @@ footer a { color: var(--purple-strong); font-weight: 700; }
   .topbar p { display: none; }
   .topbar-actions { margin-left: auto; }
   .hero, .directory, .recommendation-hero, .recommendation-controls, .recommendation-section, footer { width: min(100% - 28px, 1180px); }
-  .hero { padding-top: 44px; }
+  .hero { padding-top: 24px; }
   .hero-grid { grid-template-columns: 1fr; gap: 24px; }
   .recommendation-hero-grid { grid-template-columns: 1fr; gap: 26px; }
+  .interest-bar { justify-self: start; }
   .recommendation-hero-grid > *, .recommendation-section-head > * { min-width: 0; }
   .recommendation-lenses, .recommended-people-grid, .recommended-content-grid, .recommendation-filter-bar, .material-grid, .detail-body-grid, .detail-related-grid { grid-template-columns: 1fr; }
   .recommendation-section-head { align-items: start; flex-direction: column; }
@@ -430,18 +444,11 @@ footer a { color: var(--purple-strong); font-weight: 700; }
         <section class="hero" aria-labelledby="page-title">
           <div class="hero-grid">
             <div>
-              <h1 id="page-title">Who should I know at CHI 2027?</h1>
-              <p class="hero-copy">
-                Find people across adjacent fields—not only people who use the same keywords. See why each person may
-                matter to your work, where you may encounter them, and what you want to do next.
-              </p>
+              <h1 id="page-title" class="page-hero-title">People</h1>
             </div>
-            <div class="interest-card">
-              <span>Your starting point</span>
-              <strong id="startingPointValue">Human-AI Interaction</strong>
-              <p id="exploreInterestsCopy">Looking beyond your field: Accessibility, Design Tools and Critical Design.</p>
-              <button id="editInterests" type="button" aria-haspopup="dialog">Edit interests</button>
-            </div>
+            <button id="editInterests" class="interest-bar" type="button" aria-haspopup="dialog" aria-label="Edit interests, 4 selected">
+              <span aria-hidden="true">◎</span><strong>Interests</strong><em id="peopleInterestCount">4</em>
+            </button>
           </div>
         </section>
 
@@ -518,21 +525,13 @@ footer a { color: var(--purple-strong); font-weight: 700; }
 
         <div id="recommendationsView" hidden>
           <section class="recommendation-hero" aria-labelledby="recommendations-title">
-            <div class="eyebrow">PERSONALIZED DISCOVERY · EXPLAINABLE RECOMMENDATIONS</div>
             <div class="recommendation-hero-grid">
               <div>
-                <h1 id="recommendations-title">Recommendations with reasons.</h1>
-                <p class="hero-copy">
-                  Discover people, papers and sessions outside your immediate field—while seeing the exact bridge
-                  between each recommendation and your <span id="recommendationsInterestText">Human-AI Interaction</span> interests.
-                </p>
+                <h1 id="recommendations-title" class="page-hero-title">Discover</h1>
               </div>
-              <aside class="interest-card" aria-label="Recommendation interests">
-                <span>Your starting point</span>
-                <strong id="recommendationPrimaryInterest">Human-AI Interaction</strong>
-                <p id="recommendationExploreCopy">Looking beyond your field: Accessibility, Design Tools and Critical Design.</p>
-                <button id="editRecommendationInterests" type="button" aria-haspopup="dialog">Edit interests</button>
-              </aside>
+              <button id="editRecommendationInterests" class="interest-bar" type="button" aria-haspopup="dialog" aria-label="Edit interests, 4 selected">
+                <span aria-hidden="true">◎</span><strong>Interests</strong><em id="recommendationInterestCount">4</em>
+              </button>
             </div>
           </section>
 
@@ -659,6 +658,9 @@ footer a { color: var(--purple-strong); font-weight: 700; }
         <fieldset>
           <legend>Why are you saving them?</legend>
           <div id="intentionOptions" class="choice-grid"></div>
+          <label id="otherReasonField" class="other-reason-field" for="otherReason" hidden>Other reason
+            <textarea id="otherReason" rows="2" maxlength="240" placeholder="Write your own reason for saving this person."></textarea>
+          </label>
         </fieldset>
         <fieldset>
           <legend>Where did you notice them? <small>(optional)</small></legend>
@@ -856,7 +858,7 @@ const sessionKey = id => String(id).startsWith("session:") ? String(id).split(":
 
 const topicOptions = ["All topics", "Human-AI Interaction", "Accessibility", "Critical Design", "Learning Technologies", "Social Computing", "Participatory Design"];
 const relationOptions = ["All relationships", "Adjacent field", "Shared method", "Same session", "Your schedule"];
-const intentions = ["Follow their research", "Meet at a session", "Discuss a method", "Potential collaboration", "Reference for my project", "Introduce to a teammate"];
+const intentions = ["Follow their research", "Meet at a session", "Discuss a method", "Potential collaboration", "Reference for my project", "Introduce to a teammate", "Other"];
 const interestOptions = CHI.availableInterests;
 const defaultInterests = CHI.defaults.interests;
 
@@ -941,16 +943,11 @@ function personalizedReason(text) {
 }
 
 function renderInterestSummary() {
-  const {primary, explore} = state.interests;
-  $("#startingPointValue").textContent = primary;
-  $("#exploreInterestsCopy").textContent = explore.length
-    ? `Looking beyond your field: ${formatInterestList(explore)}.`
-    : "Add directions you want to explore.";
-  $("#recommendationsInterestText").textContent = primary;
-  $("#recommendationPrimaryInterest").textContent = primary;
-  $("#recommendationExploreCopy").textContent = explore.length
-    ? `Looking beyond your field: ${formatInterestList(explore)}.`
-    : "Add directions you want to explore.";
+  const count = 1 + state.interests.explore.length;
+  $("#peopleInterestCount").textContent = count;
+  $("#recommendationInterestCount").textContent = count;
+  $("#editInterests").setAttribute("aria-label", `Edit interests, ${count} selected`);
+  $("#editRecommendationInterests").setAttribute("aria-label", `Edit interests, ${count} selected`);
 }
 
 function renderPrimaryInterestOptions() {
@@ -1215,7 +1212,6 @@ function filteredPeople() {
 
 function personCard(person) {
   const isSelected = state.selected.has(person.id);
-  const isSaved = Boolean(state.saved[person.id]);
   return `
     <article class="person-card ${isSelected ? "selected" : ""}" data-person-id="${person.id}">
       <button class="select-person" type="button" aria-label="${isSelected ? "Deselect" : "Select"} ${escapeHtml(person.name)}" aria-pressed="${isSelected}">${isSelected ? "✓" : "+"}</button>
@@ -1226,7 +1222,6 @@ function personCard(person) {
       <div class="role-row"><span class="tag role">${escapeHtml(person.role)}</span>${person.topics.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
       <p class="touchpoint"><span aria-hidden="true">◷</span><span><b>At CHI</b><br>${escapeHtml(person.touchpoint)}</span></p>
       <div class="person-actions">
-        <button class="secondary-button save-quick ${isSaved ? "saved" : ""}" type="button">${isSaved ? "Saved with intention" : "Save with intention"}</button>
         <button class="primary-button view-details" type="button">View details</button>
       </div>
     </article>`;
@@ -1248,7 +1243,6 @@ function bindCardEvents() {
     const person = people.find(item => item.id === card.dataset.personId);
     $(".select-person", card).addEventListener("click", () => toggleSelection(person.id));
     $(".view-details", card).addEventListener("click", () => openDrawer(person));
-    $(".save-quick", card).addEventListener("click", () => openSaveDialog(person));
   });
 }
 
@@ -1286,9 +1280,17 @@ function openSaveDialog(person) {
   const existing = state.saved[person.id] || {};
   $("#saveDialogTitle").textContent = `Save ${person.name}`;
   $("#intentionOptions").innerHTML = intentions.map((item, index) => `<label class="choice-option"><input type="radio" name="intention" value="${escapeHtml(item)}" ${existing.intention === item || (!existing.intention && index === 0) ? "checked" : ""}><span>${escapeHtml(item)}</span></label>`).join("");
+  $("#otherReason").value = existing.otherReason || "";
+  updateOtherReasonVisibility();
   $("#contextSelect").value = existing.context || "";
   $("#privateNote").value = existing.note || "";
   saveDialog.showModal();
+}
+
+function updateOtherReasonVisibility() {
+  const isOther = $("input[name='intention']:checked")?.value === "Other";
+  $("#otherReasonField").hidden = !isOther;
+  $("#otherReason").required = isOther;
 }
 
 function persistSaves() {
@@ -1305,7 +1307,8 @@ function renderSaved() {
   const entries = Object.entries(state.saved);
   $("#savedList").innerHTML = entries.length ? entries.map(([id, save]) => {
     const person = people.find(p => p.id === id); if (!person) return "";
-    return `<article class="saved-item" data-person-id="${id}"><div class="saved-item-head"><h3>${escapeHtml(person.name)}</h3><button class="remove-save" type="button">Remove</button></div><div class="saved-meta"><span><b>Intention:</b> ${escapeHtml(save.intention)}</span><span><b>Noticed at:</b> ${escapeHtml(save.context)}</span><span><b>Next touchpoint:</b> ${escapeHtml(person.touchpoint)}</span></div>${save.note ? `<div class="saved-note">${escapeHtml(save.note)}</div>` : ""}</article>`;
+    const intentionLabel = save.intention === "Other" && save.otherReason ? `Other — ${save.otherReason}` : save.intention;
+    return `<article class="saved-item" data-person-id="${id}"><div class="saved-item-head"><h3>${escapeHtml(person.name)}</h3><button class="remove-save" type="button">Remove</button></div><div class="saved-meta"><span><b>Intention:</b> ${escapeHtml(intentionLabel)}</span><span><b>Noticed at:</b> ${escapeHtml(save.context)}</span><span><b>Next touchpoint:</b> ${escapeHtml(person.touchpoint)}</span></div>${save.note ? `<div class="saved-note">${escapeHtml(save.note)}</div>` : ""}</article>`;
   }).join("") : `<div class="saved-empty"><b>No saved people yet.</b><p>Use “Save with intention” on a person card to keep the reason and conference context.</p></div>`;
   $$(".remove-save", $("#savedList")).forEach(button => button.addEventListener("click", () => {
     const id = button.closest(".saved-item").dataset.personId; delete state.saved[id]; persistSaves(); showToast("Removed from saved people.");
@@ -1398,8 +1401,7 @@ function contentRecommendationCard(item) {
       <div class="content-type-row"><span class="content-type ${item.type.toLowerCase()}">${item.type.toUpperCase()}</span><span class="content-lens">${escapeHtml(item.topic)}</span></div>
       <h3><button class="content-title-button" type="button">${escapeHtml(item.title)}</button></h3>
       <p class="content-authors">${escapeHtml(item.authors)}</p>
-      <p class="affiliation">${escapeHtml(item.meta)}</p>
-      <p class="content-description">${escapeHtml(item.description)}</p>
+      <p class="affiliation">${escapeHtml(item.meta.replace(/^[^·]+·\s*/, ""))}</p>
       <div class="recommendation-reason"><span>WHY RECOMMENDED?</span><p>${escapeHtml(personalizedReason(item.why))}</p></div>
       <div class="content-resources" aria-label="Available resources"><span class="${item.paperAvailable ? "available" : "unavailable"}">▤ ${item.paperAvailable ? "Paper available" : "Paper unavailable"}</span><span class="${item.videoAvailable ? "available" : "unavailable"}">▶ ${item.videoAvailable ? `Video · ${escapeHtml(item.videoDuration)}` : "Video unavailable"}</span></div>
       <div class="recommendation-actions">
@@ -1566,10 +1568,12 @@ $("#resetRecommendationFeedback").addEventListener("click", () => {
 $("#closeDrawer").addEventListener("click", closeDrawers); $("#closeSaved").addEventListener("click", closeDrawers); backdrop.addEventListener("click", closeDrawers);
 $("#showSavedTop").addEventListener("click", openSavedPanel);
 $("#closeSaveDialog").addEventListener("click", () => saveDialog.close()); $("#cancelSave").addEventListener("click", () => saveDialog.close());
+$("#intentionOptions").addEventListener("change", updateOtherReasonVisibility);
 $("#saveForm").addEventListener("submit", event => {
   event.preventDefault();
   const person = state.activePerson; const intention = $("input[name='intention']:checked")?.value; const context = $("#contextSelect").value;
-  state.saved[person.id] = { intention, context, note: $("#privateNote").value.trim(), savedAt: new Date().toISOString(), name: person.name, affiliation: person.affiliation };
+  const otherReason = intention === "Other" ? $("#otherReason").value.trim() : "";
+  state.saved[person.id] = { intention, otherReason, context, note: $("#privateNote").value.trim(), savedAt: new Date().toISOString(), name: person.name, affiliation: person.affiliation };
   persistSaves(); saveDialog.close(); showToast(`${person.name} saved with context.`);
 });
 $("#clearSelection").addEventListener("click", () => { state.selected.clear(); renderPeople(); updateCompareBar(); });
