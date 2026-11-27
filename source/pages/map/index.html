@@ -12,7 +12,7 @@
 :root{
   --bg:var(--paper); --surface:var(--card); --surface-2:var(--soft); --ink-2:#44463f; --line-2:#c7c6bf;
   --accent-ink:var(--accent);
-  --quiet:#2b6f86; --quiet-soft:#dcebf0; --busy:#9a6a00; --busy-soft:#f7ecd0;
+  --quiet:#314f44; --quiet-soft:#e4ece7; --busy:#9a6a00; --busy-soft:#f7ecd0;
   --ok:#2c6a3f; --ok-soft:#e1eee4; --no:#a83a2c; --no-soft:#f7e2de; --unk:#7a5e00; --unk-soft:#f6efd6;
   --room:#fff; --corridor:var(--soft); --shadow:0 1px 2px rgba(15,31,25,.06),0 2px 8px rgba(15,31,25,.06);
 }
@@ -328,7 +328,7 @@ svg.ov{width:100%;height:auto;max-height:100%;display:block}
 .fw{font-size:11.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .facts-key{margin:8px 0 0;font-size:11.5px}
 .fk{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:50%;color:#fff;font:800 8.5px/1 var(--sans);vertical-align:-1px}
-.breakrow{display:flex;align-items:center;gap:8px;width:100%;margin-top:8px;padding:7px 10px;border:0;border-radius:4px;background:var(--quiet-soft);color:var(--ink);font:500 13.5px/1.3 var(--sans);text-align:left;cursor:pointer}
+.breakrow{display:flex;align-items:center;gap:8px;width:100%;margin-top:10px;padding:7px 10px;border:1px solid transparent;border-radius:4px;background:var(--quiet-soft);color:var(--ink);font:500 13.5px/1.3 var(--sans);text-align:left;cursor:pointer}
 .breakrow svg{width:18px;height:18px;flex:none;color:var(--quiet)}
 .breakrow span{flex:1}
 .breakrow:hover{border-color:var(--quiet)}
@@ -691,6 +691,14 @@ const FICON = {
   mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
   loop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 10a5 5 0 0 1 10 0c0 3-3 4-3 6.5a2.5 2.5 0 0 1-5 0"/><path d="M10 10a2 2 0 0 1 4 0"/></svg>'
 };
+// Quiet-room nudge: only when this room is often crowded or not sensory-friendly, never on every room.
+function breakHint(n){
+  const r=CHI.rooms[n]; if(!r || n==="M2 - Room M219") return "";
+  const busy=r.crowding==="high", loud=r.sensoryFriendly===false; if(!busy && !loud) return "";
+  const why=busy&&loud?"Busy & loud":busy?"Often crowded":"Not sensory-friendly";
+  const where=ROOMS[n]&&ROOMS[n].floor==="M2"?"same level":"Level M2";
+  return `<button class="breakrow" id="toQuiet" title="${why}. Quiet Room M219 is on ${where}." aria-label="${why}. Open Quiet Room M219, ${where}">${ICON.leaf}<span>${why} · <b>Quiet Room M219</b></span><b aria-hidden="true">→</b></button>`;
+}
 // One tile per fact: icon + short word + status mark. The full sentence is the tooltip and accessible name.
 function factTiles(n){
   const r=CHI.rooms[n], c=capInfo(n);
@@ -757,9 +765,8 @@ ${(()=>{ const n=nextUp(); return n?`<button class="quick" data-open="${esc(n.ro
       ? `<ul class="slist">${shown.map(row).join("")}</ul>${more.length?`<details class="smore"><summary>${more.length} more session${more.length>1?"s":""}</summary><ul class="slist">${more.map(row).join("")}</ul></details>`:""}`
       : `<p class="srcline">No sessions in this room.</p>`;
     p.innerHTML=`<button class="x" aria-label="Close">${ICON.x}</button><h2>${esc(title(S.sel))}</h2><p class="meta">${esc(where(S.sel))}${lm?" · "+esc(lm):""}</p>${route}
-      <button class="breakrow" id="toQuiet">${ICON.leaf}<span>Need a break? <b>Quiet Room M219</b></span><b aria-hidden="true">→</b></button>
       <div class="sec"><h3>Sessions here</h3>${sess}</div>
-      <div class="sec"><h3>Room facts</h3>${factTiles(S.sel)}<p class="srcline facts-key"><span class="fk ok">✓</span> yes <span class="fk no">✕</span> no <span class="fk warn">!</span> heads-up <span class="fk unk">?</span> unknown · <a href="../accessibility/">FAQ</a></p></div>
+      <div class="sec"><h3>Room facts</h3>${factTiles(S.sel)}<p class="srcline facts-key"><span class="fk ok">✓</span> yes <span class="fk no">✕</span> no <span class="fk warn">!</span> heads-up <span class="fk unk">?</span> unknown · <a href="../accessibility/">FAQ</a></p>${breakHint(S.sel)}</div>
 `;
   }
   p.querySelector(".x").onclick=()=>{S.sel=null; S.route=false; S.from=null; render();};
