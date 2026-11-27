@@ -298,6 +298,40 @@ svg.ov{width:100%;height:auto;max-height:100%;display:block}
 @media (max-width:900px){.app{height:auto;min-height:0}.main{height:auto}
   .mapview.open,.mapview{grid-template-columns:1fr}.panel{max-height:none}.canvas{min-height:0;flex-direction:column;align-items:stretch;padding:56px 70px 12px 12px}.layerbar{position:static;align-self:flex-start;flex-wrap:wrap;max-width:none;row-gap:4px;margin:10px 0 0;box-shadow:none}.nextchip{max-width:calc(100% - 28px)}svg.plan{height:auto}
   .mapview,.schedview{grid-template-columns:1fr;height:auto}.floors{flex-direction:row;flex-wrap:wrap}.panel,.preview{border-left:0;border-top:1px solid var(--line)}.screen{overflow:visible}.slist{overflow:visible}.topbar{flex-wrap:wrap}.now-chip{margin-left:0}}
+
+/* ---- compact room panel ---- */
+.panel h2{font-size:24px}
+.panel .meta{margin:2px 0 12px}
+.panel .sec{padding:12px 0 2px;margin-top:12px}
+.panel .sec h3{margin-bottom:6px}
+.slist{list-style:none;margin:0;padding:0}
+.srow{overflow:visible;display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:40px;padding:6px 8px;margin:0 -8px;border-radius:4px;color:inherit;text-decoration:none}
+.srow:hover{background:var(--surface-2)}
+.srow.done{opacity:.55}
+.sw{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sw .live{margin:0}
+.st{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14.5px;font-weight:600}
+.sk{position:relative;display:inline-flex;width:20px;height:20px;margin-right:6px;color:var(--accent)}
+.sk svg{width:18px;height:18px}
+.sk i{position:absolute;right:-7px;top:-4px;min-width:14px;height:14px;padding:0 3px;border-radius:7px;background:var(--accent);color:#fff;font:700 9.5px/14px var(--sans);font-style:normal;text-align:center}
+.smore summary{cursor:pointer;color:var(--accent);font-size:13px;font-weight:700;padding:4px 0;list-style:none}
+.smore summary::-webkit-details-marker{display:none}
+.smore summary::before{content:"+ "}
+.smore[open] summary::before{content:"− "}
+.ftiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ft{display:grid;justify-items:center;gap:4px;padding:8px 2px 7px;border:1px solid var(--line);border-radius:4px;background:#fff;cursor:default}
+.fi{position:relative;display:inline-flex;width:24px;height:24px;color:var(--ink)}
+.fi svg{width:24px;height:24px}
+.fm{position:absolute;right:-8px;top:-6px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;font:800 9.5px/1 var(--sans);color:#fff}
+.ft.ok .fm,.fk.ok{background:#2c6a3f}.ft.no .fm,.fk.no{background:#a83a2c}.ft.warn .fm,.fk.warn{background:#9a6a00}.ft.unk .fm,.fk.unk{background:#9a9b94}
+.ft.unk .fi,.ft.unk .fw{opacity:.55}
+.fw{font-size:11.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.facts-key{margin:8px 0 0;font-size:11.5px}
+.fk{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:50%;color:#fff;font:800 8.5px/1 var(--sans);vertical-align:-1px}
+.breakrow{display:flex;align-items:center;gap:8px;width:100%;margin-top:8px;padding:7px 10px;border:0;border-radius:4px;background:var(--quiet-soft);color:var(--ink);font:500 13.5px/1.3 var(--sans);text-align:left;cursor:pointer}
+.breakrow svg{width:18px;height:18px;flex:none;color:var(--quiet)}
+.breakrow span{flex:1}
+.breakrow:hover{border-color:var(--quiet)}
 </style>
 </head>
 <body data-page="map">
@@ -643,6 +677,35 @@ function renderMap(){
   renderPanel();
 }
 
+const SICON = {
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+  award:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
+const FICON = {
+  seats:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 11V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v5"/><path d="M4 11h16v4H4zM6 15v5M18 15v5"/></svg>',
+  step:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="10" cy="4.5" r="1.6"/><path d="M10 7v6h5l2 5M10 10h4"/><path d="M8.5 11.5A5 5 0 1 0 14 19"/></svg>',
+  sensory:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M3 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0" opacity=".55"/></svg>',
+  crowd:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M2.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M14 14.5c3 0 7 1 7 4.5"/></svg>',
+  temp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 10v6"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
+  loop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 10a5 5 0 0 1 10 0c0 3-3 4-3 6.5a2.5 2.5 0 0 1-5 0"/><path d="M10 10a2 2 0 0 1 4 0"/></svg>'
+};
+// One tile per fact: icon + short word + status mark. The full sentence is the tooltip and accessible name.
+function factTiles(n){
+  const r=CHI.rooms[n], c=capInfo(n);
+  const T=(icon,word,st,full)=>`<li class="ft ${st}" title="${esc(full)}" aria-label="${esc(full)}"><span class="fi">${FICON[icon]}<b class="fm" aria-hidden="true">${st==="ok"?"✓":st==="no"?"✕":st==="warn"?"!":"?"}</b></span><span class="fw" aria-hidden="true">${word}</span></li>`;
+  const yn=v=>v===undefined?"unk":v?"ok":"no";
+  return `<ul class="ftiles">
+    ${T("seats", c?`${c.c} seats`:"Seats", c?(c.small?"warn":"ok"):"unk", c?`${c.c} seats${c.small?" — may fill up, arrive early":""}`:"Number of seats unknown")}
+    ${T("step","Step-free", yn(r&&r.stepFree), r?(r.stepFree?"Step-free access confirmed":"Not step-free"):"Step-free access unknown")}
+    ${T("sensory","Sensory", yn(r&&r.sensoryFriendly), r?(r.sensoryFriendly?"Sensory-friendly":"Not sensory-friendly"):"Sensory-friendly: unknown")}
+    ${T("crowd", r?(r.crowding==="high"?"Busy":r.crowding==="medium"?"Moderate":"Calm"):"Crowd", r?(r.crowding==="high"?"warn":"ok"):"unk", r?`Crowding: ${r.crowding==="high"?"often crowded":r.crowding==="medium"?"moderate":"usually calm"}`:"Crowding unknown")}
+    ${T("temp", r?(r.temperature==="warm"?"Warm":r.temperature==="cool"?"Cool":"Comfy"):"Temp", r?(r.temperature==="comfortable"?"ok":"warn"):"unk", r?`Temperature: ${r.temperature==="comfortable"?"comfortable":"often "+r.temperature}`:"Temperature unknown")}
+    ${T("mic","Mics","ok","Microphones for speakers and Q&A (venue-wide, from the Accessibility FAQ)")}
+    ${T("loop","Loop","no","No hearing loop (venue-wide, from the Accessibility FAQ)")}
+  </ul>`;
+}
 function a11yList(n){
   const r=CHI.rooms[n], T=(ok,yes,no)=>ok===undefined?`<span class="tag unk">Unknown</span>`:ok?`<span class="tag ok">${yes}</span>`:`<span class="tag no">${no}</span>`;
   return `<ul class="a11y">
@@ -679,14 +742,25 @@ ${(()=>{ const n=nextUp(); return n?`<button class="quick" data-open="${esc(n.ro
     p.innerHTML=`<button class="x" aria-label="Close">${ICON.x}</button><h2>${esc(title(S.sel))}</h2><p class="meta">${esc(where(S.sel))}${lm?" · "+esc(lm):""}</p>${route}
       <div class="sec"><h3>About this space</h3><p>${esc(r.note)}</p><p class="srcline">From the <a href="../accessibility/">Accessibility FAQ</a></p></div>`;
   } else {
-    const c=capInfo(S.sel);
-    const days=[...new Set(d.all.map(e=>e.date))];
-    const sess = days.length ? days.map(day=>`<h4 class="sday">${day===TODAY?"Today · ":""}${esc(dayShort(day))}</h4>`+d.all.filter(e=>e.date===day).map(e=>`<a class="ses" href="${e.href}"><span class="t">${e.start} – ${e.end}</span><span>${esc(e.title)}${day===TODAY&&e.start<=NOW&&NOW<e.end?'<span class="live">NOW</span>':""}<small>${esc(e.kind)}${e.awards?" · "+e.awards+" award paper"+(e.awards>1?"s":""):""}${e.sessionId&&STORE.read("plan").includes(e.sessionId)?" · In My plan":""}</small></span></a>`).join("")).join("") : `<p class="srcline">No sessions scheduled in this room.</p>`;
+    // Compact panel: sessions (max 3, rest folded) → icon facts → one-line break link. Fits one screen.
+    const all=d.all, plan=STORE.read("plan");
+    const upcoming=all.filter(e=>e.date>TODAY||(e.date===TODAY&&e.end>NOW)), past=all.filter(e=>!upcoming.includes(e));
+    const ordered=[...upcoming,...past];
+    const row=e=>{ const live=e.date===TODAY&&e.start<=NOW&&NOW<e.end, done=past.includes(e), mine=e.sessionId&&plan.includes(e.sessionId);
+      const label=`${e.title}, ${dayShort(e.date)} ${e.start} to ${e.end}, ${e.kind}${e.awards?`, ${e.awards} award paper${e.awards>1?"s":""}`:""}${mine?", in My plan":""}${live?", happening now":""}`;
+      return `<li><a class="srow${done?" done":""}" href="${e.href}" aria-label="${esc(label)}" title="${esc(label)}">
+        <span class="sw">${live?'<em class="live">Now</em>':`${esc(dayShort(e.date).split(",")[0])} ${e.start}`}</span>
+        <span class="st">${esc(e.title)}</span>
+        <span class="sk" aria-hidden="true">${mine?SICON.check:e.kind==="Program"?SICON.cal:SICON.award}${e.awards>1?`<i>${e.awards}</i>`:""}</span></a></li>`; };
+    const shown=ordered.slice(0,3), more=ordered.slice(3);
+    const sess = all.length
+      ? `<ul class="slist">${shown.map(row).join("")}</ul>${more.length?`<details class="smore"><summary>${more.length} more session${more.length>1?"s":""}</summary><ul class="slist">${more.map(row).join("")}</ul></details>`:""}`
+      : `<p class="srcline">No sessions in this room.</p>`;
     p.innerHTML=`<button class="x" aria-label="Close">${ICON.x}</button><h2>${esc(title(S.sel))}</h2><p class="meta">${esc(where(S.sel))}${lm?" · "+esc(lm):""}</p>${route}
+      <button class="breakrow" id="toQuiet">${ICON.leaf}<span>Need a break? <b>Quiet Room M219</b></span><b aria-hidden="true">→</b></button>
       <div class="sec"><h3>Sessions here</h3>${sess}</div>
-      ${c?`<div class="sec"><h3>Capacity</h3><div class="cap-row"><span class="meter"><b style="width:${c.small?90:c.c>=500?25:55}%"></b></span>${c.c} seats${c.small?" · may fill up — arrive early":""}</div></div>`:""}
-      <div class="sec"><h3>Accessibility</h3>${a11yList(S.sel)}</div>
-      <div class="sec"><h3>Need a break?</h3><button class="rest" id="toQuiet"><span class="ic">${ICON.leaf}</span><span><b>Quiet Room M219</b><span>Level M2 · by elevator</span></span></button></div>`;
+      <div class="sec"><h3>Room facts</h3>${factTiles(S.sel)}<p class="srcline facts-key"><span class="fk ok">✓</span> yes <span class="fk no">✕</span> no <span class="fk warn">!</span> heads-up <span class="fk unk">?</span> unknown · <a href="../accessibility/">FAQ</a></p></div>
+`;
   }
   p.querySelector(".x").onclick=()=>{S.sel=null; S.route=false; S.from=null; render();};
   const rb=document.getElementById("routeBtn"); if(rb) rb.onclick=()=>{S.route=true; S.from=defaultFrom(); S.lift=null; S.floor=routeView(); S.picking=false; render();};
