@@ -10,6 +10,7 @@ import { roomLabel } from '../data/venue'
 import { sessionImage } from '../data/images'
 import { RoomNotes } from './RoomNotes'
 import { ContentItem } from './ContentItem'
+import { SessionComments } from './SessionComments'
 
 export function SessionDetail({ session, onBack, onGo, topic, onTopic }: { session: Session; onBack: () => void; onGo: (route: Route) => void; topic: string | null; onTopic: (keyword: string) => void }) {
   // The topic is shared with the Program page. Only dim papers here if this session actually touches it.
@@ -76,6 +77,8 @@ export function SessionDetail({ session, onBack, onGo, topic, onTopic }: { sessi
           />)}
         </section>
       </div>
+
+      <SessionComments key={session.id} session={session} index={sessions.indexOf(session)} />
     </main>
   )
 }

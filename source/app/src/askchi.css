@@ -97,3 +97,10 @@
 @media (prefers-reduced-motion: reduce) {
   .chat-panel, .chat-panel.is-open, .chat-launcher, .reference-card, .typing-dots i { animation: none !important; transition: none !important; }
 }
+
+/* Interest chips in an answer: one tap adds or removes the interest */
+.chat-interests { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chat-interests button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 1px solid rgba(23,32,28,.22); border-radius: 999px; color: #17201c; background: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .18s ease, border-color .18s ease; }
+.chat-interests button:hover { border-color: #17201c; }
+.chat-interests button span { font-weight: 800; }
+.chat-interests button.is-on { border-color: #314f44; color: #fff; background: #314f44; }

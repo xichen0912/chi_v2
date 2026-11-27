@@ -110,12 +110,18 @@ export function StartPage({ interests, selectedDate, onSelectDate, onOpenInteres
                   ))}
                 </ol>
               )}
+              <button type="button" className="next-my" onClick={() => onGo({ view: 'my' })}>
+                My plan · {plannedSessionIds.length} <span aria-hidden="true">→</span>
+              </button>
             </div>
           </section>
         ) : (
           <section className="next-up is-empty" key={`${selectedDate}-empty`} aria-label="Your plan">
             <span className="next-kicker">Your plan</span>
             <h1>{isToday ? 'No plans today' : `No plans on ${selectedDay?.dayName}`}</h1>
+            <button type="button" className="next-my" onClick={() => onGo({ view: 'my' })}>
+              Open My plan <span aria-hidden="true">→</span>
+            </button>
           </section>
         )}
       </div>

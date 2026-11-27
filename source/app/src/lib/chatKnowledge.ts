@@ -1,4 +1,4 @@
-import type { Interest } from '../data/interests'
+import { availableInterests, type Interest } from '../data/interests'
 import { getPlan, getSavedPapers } from './store'
 import { roomLabel, venueRooms } from '../data/venue'
 import { rooms } from '../data/rooms'
@@ -26,6 +26,7 @@ export function buildChatKnowledge(interests: Interest[]) {
       sections: ['Program', 'Map', 'People', 'Recommendations', 'Awards', 'Accessibility', 'My'],
       quietRoom: 'M2 - Room M219 (Quiet Room, Level M2)',
     },
+    availableInterests,
     dates: conferenceDays,
     sessions,
     rooms: Object.keys(venueRooms).map((id) => ({ id, label: roomLabel(id), floor: venueRooms[id].floor, info: rooms[id] ?? 'unknown', note: venueRooms[id].note })),

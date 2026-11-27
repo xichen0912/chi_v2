@@ -1,8 +1,9 @@
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
-import type { Interest } from '../data/interests'
+import { availableInterests, type Interest } from '../data/interests'
 import { rooms } from '../data/rooms'
 import { roomLabel, venueRooms } from '../data/venue'
-import { getPlan, usePlan } from '../lib/store'
+import { getPlan, setInterests, useInterests, usePlan } from '../lib/store'
+import { searchInterests, sessionsForInterest } from '../lib/interestSearch'
 import { sessions } from '../data/sessions'
 import { getPeople } from '../lib/people'
 import type { Route } from '../lib/route'
@@ -22,18 +23,21 @@ interface Message {
   role: 'user' | 'assistant'
   text: string
   references?: ChatReference[]
+  /** Interest names the visitor can add with one tap. */
+  interests?: string[]
 }
 
 interface ApiReply {
   answer: string
   references?: Array<{ kind: ReferenceKind; id: string; title?: string; note?: string }>
+  interests?: string[]
   mode?: 'live' | 'demo'
   model?: string
 }
 
 const suggestions = [
   'What is on Monday at 9 AM?',
-  'I care about accessibility. What should I see?',
+  'Which interests fit elderly care?',
   'Where can I find a quiet, step-free room?',
   'Which papers is Mina Patel on?',
 ]
@@ -73,9 +77,43 @@ function resolveReferences(items: ApiReply['references']): ChatReference[] {
   return resolved.slice(0, 4)
 }
 
-function localAnswer(question: string): ApiReply {
+// "Which interests fit…", "I'm into…", "我对…感兴趣": the visitor is looking for a direction, not a session.
+const interestIntent = /interest|topic|direction|field|i'?m into|curious about|兴趣|方向|领域/i
+const fillerWords = /\b(which|what|find|search|help|me|my|i|am|i'm|im|into|interests?|topics?|directions?|fields?|fit|fits|close|to|for|about|curious|like|that|the|a|an|are|is|do|you|have|any|related|show)\b|[?？,，.。]|我|对|感兴趣|兴趣|方向|领域|有哪些|相关|的|找|搜索|帮/gi
+
+function interestQuery(question: string) {
+  return question.replace(fillerWords, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function localInterests(question: string, current: Interest[]): string[] {
+  if (!interestIntent.test(question)) return []
+  const loose = interestQuery(question)
+  return loose ? searchInterests(loose, current).slice(0, 4).map((hit) => hit.interest) : []
+}
+
+function localAnswer(question: string, current: Interest[]): ApiReply {
   const query = question.toLowerCase()
   const tokens = query.split(/[^a-z0-9\u4e00-\u9fff]+/).filter((token) => token.length > 1)
+
+  if (interestIntent.test(question)) {
+    const loose = interestQuery(question)
+    const hits = loose ? searchInterests(loose, current).slice(0, 4) : []
+    if (hits.length) {
+      const sample = sessionsForInterest(hits[0].interest, loose)
+      return {
+        answer: `Closest to “${loose}”. Tap to add one; Program and Today will rank sessions by it.${sample.length ? ` Good first sessions for ${hits[0].interest}:` : ''}`,
+        interests: hits.map((hit) => hit.interest),
+        references: sample.map((session) => ({ kind: 'session' as const, id: session.id })),
+        mode: 'demo',
+      }
+    }
+    if (!loose) {
+      return {
+        answer: `Describe it loosely, even a single word like robots, kids or elderly care, and I will find the closest of these: ${availableInterests.join(', ')}.`,
+        mode: 'demo',
+      }
+    }
+  }
 
   if ((/周一|monday/.test(query)) && /\b9\b|9(?::00)?\s*(点|am)/.test(query)) {
     const matches = sessions.filter((session) => session.date === '2027-05-10' && session.startTime === '9:00 AM')
@@ -161,6 +199,10 @@ function loadOpen(openFirst: boolean): boolean {
 
 export function Chatbot({ interests, onGo, openFirst = false }: { interests: Interest[]; onGo: (route: Route) => void; openFirst?: boolean }) {
   const plannedSessionIds = usePlan()
+  const chosenInterests = useInterests()
+  const toggleInterest = (interest: string) => setInterests(chosenInterests.includes(interest)
+    ? chosenInterests.filter((item) => item !== interest)
+    : [...chosenInterests, interest])
   const [open, setOpenState] = useState(() => loadOpen(openFirst))
   const setOpen = (value: boolean | ((current: boolean) => boolean)) => {
     setOpenState((current) => {
@@ -218,20 +260,23 @@ export function Chatbot({ interests, onGo, openFirst = false }: { interests: Int
       const reply = await response.json() as ApiReply
       setApiState(reply.mode === 'live' ? 'live' : 'demo')
       setModel(reply.model ?? model)
+      const offered = (reply.interests ?? []).filter((item) => availableInterests.includes(item) || chosenInterests.includes(item))
       setMessages((current) => [...current, {
         id: uid(),
         role: 'assistant',
         text: reply.answer,
         references: resolveReferences(reply.references),
+        interests: offered.length ? offered : localInterests(question, chosenInterests),
       }])
     } catch {
-      const reply = localAnswer(question)
+      const reply = localAnswer(question, chosenInterests)
       setApiState('demo')
       setMessages((current) => [...current, {
         id: uid(),
         role: 'assistant',
         text: reply.answer,
         references: resolveReferences(reply.references),
+        interests: reply.interests,
       }])
     } finally {
       setPending(false)
@@ -287,6 +332,18 @@ export function Chatbot({ interests, onGo, openFirst = false }: { interests: Int
             <article key={message.id} className={`chat-message is-${message.role}`}>
               <span className="message-role">{message.role === 'assistant' ? 'Ask CHI' : 'You'}</span>
               <p>{message.text}</p>
+              {!!message.interests?.length && (
+                <div className="chat-interests" aria-label="Add to your interests">
+                  {message.interests.map((interest) => {
+                    const on = chosenInterests.includes(interest)
+                    return (
+                      <button type="button" key={interest} className={on ? 'is-on' : ''} aria-pressed={on} onClick={() => toggleInterest(interest)}>
+                        <span aria-hidden="true">{on ? '✓' : '+'}</span>{interest}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
               {!!message.references?.length && (
                 <div className="chat-references" aria-label="Sources in this site">
                   {message.references.map((reference) => (

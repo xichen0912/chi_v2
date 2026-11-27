@@ -1,7 +1,7 @@
 import type { Interest } from '../data/interests'
 import type { Session } from '../types'
 
-const interestSignals: Record<string, string[]> = {
+export const interestSignals: Record<string, string[]> = {
   'Human-AI Interaction': ['human-ai interaction', 'artificial intelligence', 'ai', 'trust', 'agency', 'explainability'],
   Accessibility: ['accessibility', 'inclusive design', 'blind', 'deaf', 'low vision', 'assistive'],
   'Tangible Interaction': ['tangible interaction', 'tangible', 'fabrication', 'physical computing', 'haptics'],

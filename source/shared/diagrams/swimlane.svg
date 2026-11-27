@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" font-family="Helvetica, Arial, sans-serif">
+<rect width="1600" height="1000" fill="#ffffff"/>
+<g font-size="24" fill="#23395b">
+<rect x="40" y="80" width="1520" height="210" fill="#f3f6fa" stroke="#c9d3e0"/>
+<rect x="40" y="80" width="56" height="210" fill="#23395b"/>
+<text transform="translate(76 185.0) rotate(-90)" text-anchor="middle" fill="#fff" font-weight="700">Nurse</text>
+<rect x="40" y="290" width="1520" height="210" fill="#ffffff" stroke="#c9d3e0"/>
+<rect x="40" y="290" width="56" height="210" fill="#23395b"/>
+<text transform="translate(76 395.0) rotate(-90)" text-anchor="middle" fill="#fff" font-weight="700">Physician</text>
+<rect x="40" y="500" width="1520" height="210" fill="#f3f6fa" stroke="#c9d3e0"/>
+<rect x="40" y="500" width="56" height="210" fill="#23395b"/>
+<text transform="translate(76 605.0) rotate(-90)" text-anchor="middle" fill="#fff" font-weight="700">Patient</text>
+<rect x="40" y="710" width="1520" height="210" fill="#ffffff" stroke="#c9d3e0"/>
+<rect x="40" y="710" width="56" height="210" fill="#23395b"/>
+<text transform="translate(76 815.0) rotate(-90)" text-anchor="middle" fill="#fff" font-weight="700">Record</text>
+<rect x="160" y="145.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="245" y="193.0" text-anchor="middle" font-size="21">Assess</text>
+<rect x="360" y="355.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="445" y="403.0" text-anchor="middle" font-size="21">Review chart</text>
+<polygon points="645,130.0 730,185.0 645,240.0 560,185.0" fill="#fff4e0" stroke="#e08e2b" stroke-width="3"/>
+<text x="645" y="193.0" text-anchor="middle" font-size="21">Shift change</text>
+<rect x="560" y="775.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="645" y="823.0" text-anchor="middle" font-size="21">Log vitals</text>
+<rect x="760" y="565.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="845" y="613.0" text-anchor="middle" font-size="21">Ask question</text>
+<rect x="960" y="145.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="1045" y="193.0" text-anchor="middle" font-size="21">Brief</text>
+<polygon points="1245,340.0 1330,395.0 1245,450.0 1160,395.0" fill="#fff4e0" stroke="#e08e2b" stroke-width="3"/>
+<text x="1245" y="403.0" text-anchor="middle" font-size="21">Decide</text>
+<rect x="1160" y="775.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="1245" y="823.0" text-anchor="middle" font-size="21">Update plan</text>
+<rect x="1360" y="565.0" width="170" height="80" rx="10" fill="#fff" stroke="#3d7ea6" stroke-width="3"/>
+<text x="1445" y="613.0" text-anchor="middle" font-size="21">Consent</text>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3d7ea6"/></marker></defs>
+<path d="M330 185.0 C345.0 185.0 345.0 395.0 360 395.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M530 395.0 C545.0 395.0 545.0 185.0 560 185.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M645 185.0 C645.0 185.0 645.0 815.0 645 775.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M730 185.0 C745.0 185.0 745.0 605.0 760 605.0" fill="none" stroke="#3d7ea6" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#ah)"/>
+<path d="M930 605.0 C945.0 605.0 945.0 185.0 960 185.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M730 815.0 C845.0 815.0 845.0 185.0 960 185.0" fill="none" stroke="#3d7ea6" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#ah)"/>
+<path d="M1130 185.0 C1145.0 185.0 1145.0 395.0 1160 395.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M1245 395.0 C1245.0 395.0 1245.0 815.0 1245 775.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M1330 395.0 C1345.0 395.0 1345.0 605.0 1360 605.0" fill="none" stroke="#3d7ea6" stroke-width="3" marker-end="url(#ah)"/>
+</g>
+</svg>
